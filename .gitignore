@@ -1,0 +1,8 @@
+.env
+.vscode/
+*__pycache__*
+htmlcov/*
+purbeurre/htmlcov/*
+*/.pytest_cache/*
+.coverage
+geckodriver.log

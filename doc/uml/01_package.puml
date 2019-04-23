@@ -1,0 +1,18 @@
+@startuml 01_package
+title Diagramme de Package
+
+rectangle pure_beurre {
+    package products
+    package authentication
+}
+actor user
+actor OpenFoofFacts <<system>>
+actor Developpeur
+
+products -- user
+authentication -- user
+products - OpenFoofFacts
+products -- Developpeur
+
+
+@enduml

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% include 'products/base_product_title_img.html' %}
+
+  <!-- Product Details -->
+  <section id="product-detail">
+    <div class="container">
+      <div class="row align-items-center justify-content-center py-3 mx-1">
+        <div class="col-12 col-lg-6 text-center">
+          <img src="{% static 'img/nutricode/nutriscore-'|add:product.nutrition_grades|add:'.svg' %}" alt="">
+        </div>
+        <div class="col-12 col-lg-6">
+          <h3>Repères nutritionnels pour 100 g</h3>
+          <ul class="nutrient-levels">
+            <li class="{{ product.fat }}">{{ product.fat_100g }} g Matières grasses / Lipides</li>
+            <li class="{{ product.saturated_fat }}">{{ product.saturated_fat_100g }} g Acides gras saturés</li>
+            <li class="{{ product.sugars }}">{{ product.sugars_100g }} g Sucres</li>
+            <li class="{{ product.salt }}">{{ product.salt_100g }} g Sel</li>
+          </ul>
+        </div>
+        <div class="col-12 text-center">
+          <a href="{{product.url}}" target="_blank">
+            <button type="button" class="btn btn-lg btn-outline-secondary">Voir la fiche Openfoodfacts</button>
+          </a>
+        </div>
+        <div class="col-12 text-center">
+          <button onclick="window.history.back();" type="button" class="btn btn-lg btn-outline-secondary mt-0">Retour</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

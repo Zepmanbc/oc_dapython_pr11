@@ -1,0 +1,28 @@
+@startuml 03_activity_02
+title Workflow pas connecté
+
+|utilisateur|
+|systeme|
+
+
+|utilisateur|
+start
+:remplis le formulaire de 
+recherche et valide;
+|systeme|
+:Affiche une liste de produits (initial);
+|utilisateur|
+:Sélectionne un produit (initial);
+|systeme|
+:Affiche une liste de produit avec 
+de meilleures caractéristiques;
+|utilisateur|
+:sélectionne un produit
+(clique sur l'icone);
+|systeme|
+:demande à l'utilisateur 
+de se connecter ou de s'enregistrer;
+end
+
+
+@enduml

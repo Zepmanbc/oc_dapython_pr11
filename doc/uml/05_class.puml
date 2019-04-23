@@ -1,0 +1,29 @@
+@startuml 05_class
+
+class Products{
+    search_product()
+    show_product()
+    show_substitute()
+    save_substitute()
+    delete_substitute()
+    show_my_product()
+    fillindb()
+    --
+    name: String
+    nutriscore: String
+    repere_nutritionnel: String
+    category: String
+    url: String
+    picture: String
+}
+
+class Authentication{
+    create_user()
+    login()
+    logout()
+    ---
+    email: String
+    password: String
+}
+
+@enduml

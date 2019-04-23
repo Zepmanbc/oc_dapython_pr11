@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% include 'base_title_section.html' %}
+  
+  <!-- My Product Result Section -->
+  <section id="product-result">
+    <div class="container">
+        {% if not object_list %}
+        <div class="row align-items-center justify-content-center"></div>
+          <div class="alert alert-warning">Il n'y a pas de produits enregistrés</div>
+        </div>
+        {% endif %}
+        {% for sl in object_list %}
+        <div class="row align-items-center justify-content-center">
+          <div class="col-4 mx-1 px-0">
+            <div class="product-thumb-myproduct">
+              <div class="nutriscore nutriscore-{{sl.product_id.nutrition_grades|upper}} text-center"></div>
+              <a href="{% url 'products:detail' sl.product_id.id %}">
+                <img src="{{sl.product_id.image_url}}" class="rounded mx-auto d-block" alt="">
+              </a>
+              <div class="product-thumb-legend">
+                <p class="text-center">{{sl.product_id|title}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-1 px-0 text-center">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          <div class="col-4 mx-1 px-0">
+            <div class="product-thumb-myproduct">
+              <div class="nutriscore nutriscore-{{sl.substitute_id.nutrition_grades|upper}} text-center"></div>
+                <a href="{% url 'products:detail' sl.substitute_id.id %}">
+                  <img src="{{sl.substitute_id.image_url}}" class="rounded mx-auto d-block" alt="">
+                </a>
+              <div class="product-thumb-legend">
+                <p class="text-center">{{sl.substitute_id|title}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-1 px-0">
+            <p>
+              <form action="{% url 'products:delete' sl.id %}" method="GET">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link"><i class="fas fa-trash-alt"></i></button>
+              </form>
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+        {% if is_paginated %}
+        <div class="row align-items-center justify-content-center">
+          <div class="pagination text-center">
+              <span class="page-links">
+                  {% if page_obj.has_previous %}
+                      <a href="?page={{ page_obj.previous_page_number }}">Précédente</a>
+                  {% endif %}
+                  <span class="page-current">
+                      Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}.
+                  </span>
+                  {% if page_obj.has_next %}
+                      <a href="?page={{ page_obj.next_page_number }}">Suivante</a>
+                  {% endif %}
+              </span>
+          </div>
+        </div>
+        {% endif %}
+    </div>
+    </section>
+
+{% endblock content %}

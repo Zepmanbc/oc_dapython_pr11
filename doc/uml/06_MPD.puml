@@ -1,0 +1,46 @@
+@startuml 06_MPD
+
+left to right direction
+
+object user{
+    [PK] id INTERGER NOT NULL
+    email VARCHAR(255)
+    password CHAR(64) NOT NULL (SHA-256)
+    firstname VARCHAR(255)
+    lastname VARCHAR(255)
+}
+
+object product{
+    [PK] id INTERGER NOT NULL
+    designation VARCHAR(255)
+    nutriscore VARCHAR(1)
+    category VARCHAR(255)
+    url VARCHAR(255)
+    picture VARCHAR(255)
+    product_name VARCHAR(200)
+    nutrition_grades VARCHAR(1)
+    fat VARCHAR(8)
+    fat_100g DECIMAL(3,2)
+    saturated_fat VARCHAR(8)
+    saturated_fat_100g DECIMAL(3,2)
+    sugars VARCHAR(8)
+    sugars_100g DECIMAL(3,2)
+    salt VARCHAR(8)
+    salt_100g DECIMAL(3,2)
+    image_url VARCHAR()
+    url VARCHAR()
+    category VARCHAR(20)
+}
+
+object substitute{
+    [PK] id INTERGER NOT NULL
+    [FK] user_id INTERGER NOT NULL
+    [FK] product_id INTERGER NOT NULL
+    [FK] substitute_id INTERGER NOT NULL
+}
+
+user "1" -- "*" substitute
+product "2" -- "*" substitute
+
+
+@enduml

@@ -1,0 +1,22 @@
+    <!-- Product Search Section -->
+    <header id="product-search" class="bg-product-search">
+        <div class="container-fluid h-200">
+        <div class="row h-100 align-items-center justify-content-center text-center">
+            <!-- <img src="{#product.image_url#}" alt=""> -->
+            <h1 class="text-white font-weight-bold">{{ query|title }}</h1>
+        </div>
+        </div>
+    </header>
+    
+    <!-- Modify product picture -->
+    <style>
+    .bg-product-search {
+        padding-top: 10rem;
+        background-color: #345A61;
+        background: linear-gradient(to bottom,rgba(92,77,66,.8) 0,rgba(92,77,66,.8) 100%),
+            url({{product.image_url}});
+        background-repeat: no-repeat;
+        background-position-x: 35%;
+        background-position-y: 50%;
+    }
+    </style>

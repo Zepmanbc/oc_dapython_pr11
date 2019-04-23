@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "base_title_section.html" with title="enregistrement" %}
+
+<!-- Register form -->
+<section class="">
+    <div class="container">
+      <div class="row auth-form py-3 mx-1">
+        <div>
+          <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% if field.help_text %}
+                  <small class="text-info">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                <div class="alert alert-warning">{{ error }}</div>
+                {% endfor %}
+              </p>
+            {% endfor %}
+            <button type="submit">Enregistrer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</section>
+
+{% endblock content %}

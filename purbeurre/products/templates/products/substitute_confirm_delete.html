@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% include 'base_title_section.html' %}
+    <section id="product-result">
+      <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-4">
+              <div class="product-thumb">
+                <div class="nutriscore nutriscore-{{object.product_id.nutrition_grades|upper}} text-center"></div>
+                <a href="{% url 'products:detail' object.product_id.id %}">
+                  <img src="{{object.product_id.image_url}}" class="rounded mx-auto d-block" alt="">
+                </a>
+                <p class="text-center">{{object.product_id|title}}</p>
+              </div>
+            </div>
+            <div class="col-1">
+              <p><i class="fas fa-arrow-right fa-4x"></i></p>
+            </div>
+            <div class="col-4">
+              <div class="product-thumb">
+                <div class="nutriscore nutriscore-{{object.substitute_id.nutrition_grades|upper}} text-center"></div>
+                <a href="{% url 'products:detail' object.substitute_id.id %}">
+                  <img src="{{object.substitute_id.image_url}}" class="rounded mx-auto d-block" alt="">
+                </a>
+                <p class="text-center">{{object.substitute_id|title}}</p>
+              </div>
+            </div>
+        </div>
+        <div class="col-10 offset-1">
+          <form method="post">{% csrf_token %}
+            <p class="alert alert-warning">Vous êtes sur le point de supprimer ce substitut ?</p>
+            <div class="text-center">
+              <input type="submit" value="Valider" class="btn btn-lg btn-outline-secondary mx-3">
+              <button onclick="window.history.back();" type="button" class="btn btn-lg btn-outline-secondary mx-3">Retour</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+
+
+{% endblock content %}

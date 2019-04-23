@@ -1,0 +1,32 @@
+@startuml 03_activity_01
+title Workflow enregistrement basique
+
+|utilisateur|
+|systeme|
+
+
+|utilisateur|
+start
+:se connecte;
+|systeme|
+:active la session;
+|utilisateur|
+:remplis le formulaire de 
+recherche et valide;
+|systeme|
+:Affiche une liste de produits (initial);
+|utilisateur|
+:Sélectionne un produit (initial);
+|systeme|
+:Affiche une liste de produit avec 
+de meilleures caractéristiques;
+|utilisateur|
+:sélectionne un produit
+(clique sur l'icone);
+|systeme|
+:enregistre la conbinaison
+initial/substitut;
+end
+
+
+@enduml

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% include 'products/base_product_title_img.html' %}
+  
+  <!-- Product Result Section -->
+  <section id="product-result">
+    <div class="container">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-12 text-center">
+          <h2>Vous pouvez remplacer cet aliment par : </h2>
+          {% if message %}
+            <div class="alert alert-warning">{{message}}</div>
+          {% endif %}
+        </div>
+        {% for substitute in object_list %}
+          <div class="col-11 col-lg-4">
+            <div class="product-thumb">
+              <div class="nutriscore nutriscore-{{substitute.nutrition_grades|upper}} text-center"></div>
+                <a href="{% url target substitute.id %}">
+                  <img src="{{substitute.image_url}}" class="rounded mx-auto d-block" alt="">
+                </a>
+              <div class="product-thumb-legend">
+                <div class="text-center">{{substitute|title}}</div>
+                <div class="text-center">
+                  <form action="{% url 'products:save' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <input type="hidden" name="substitute_id" value="{{ substitute.id }}">
+                    <button type="submit" class="btn btn-link"><i class="fas fa-save fa-1x"></i> Sauvegarder</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+</section>
+
+{% endblock content %}
