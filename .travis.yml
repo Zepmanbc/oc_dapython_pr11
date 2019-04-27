@@ -3,6 +3,7 @@ dist: xenial # for mysql
 # For Selenium, need geckodriver
 env:
   - MOZ_HEADLESS=1
+  - DJANGO_SETTINGS_MODULE='purbeurre.settings.travis_settings'
 
 addons:
   firefox: latest

@@ -8,7 +8,7 @@ Docker?
 
 ## Déploiement
 
-Création d'un instance EC2 sur AWS
+### Création d'un instance EC2 sur AWS
 
 ![Sléléction d'un image Ubuntu](img/serveur_ubuntu.png)
 
@@ -20,7 +20,7 @@ connection ssh:
 
     ssh -i "~/.AWS/zepman_air13.pem" ubuntu@ec2-18-222-24-163.us-east-2.compute.amazonaws.com
 
-mise à jour des dépots et installation de python, postgresql, nginx
+mise à jour des dépots et installation de python, postgresql, nginx et supervisor
 
     sudo apt-get update
     sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
@@ -35,6 +35,8 @@ installation de pipenv et installation des dépendences
     pip3 install pipenv
     cd oc_dapython_pr10/
     pipenv sync
+
+### Configuration de postgres
 
 Creation d'un utilisateur et d'une base dans postgres
 
@@ -66,14 +68,17 @@ Ajout de la configuration dans *settings.py*
             }
         }
 
-Modificationd e la partie pour les static files
+Modification de la partie pour les static files
 
-    if os.environ.get('ENV') in ['PRODUCTION', 'AWS'] :
-        (...)
+    if get_env_variable('ENV') == 'AWS':
+        STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-(`push` sur le repo puis `git pull` sur le serveur)
+        # Extra places for collectstatic to find static files.
+        STATICFILES_DIRS = (
+            os.path.join(BASE_DIR, 'static'),
+        )
 
-Création des variables d'environnement pour le mot de passe et signifier que l'on est en prod
+### Création des variables d'environnement pour le mot de passe et signifier que l'on est en prod
 
 création d'un fichier *.env*
     ENV=AWS
@@ -82,17 +87,17 @@ création d'un fichier *.env*
     DB_PASSWORD=***********
     SECRET_KEY=[SECRET_KEY]
 
-Collecte des fichiers static, migration, collecte de produits
+### Collecte des fichiers static, migration, collecte de produits
 
     pipenv run purbeurre/manage.py collectstatic
     pipenv run purbeurre/manage.py migrate
     pipenv run purbeurre/manage.py fillindb 50
 
-Creation d'un super utilisateur
+### Creation d'un super utilisateur
 
     pipenv run purbeurre/manage.py createsuperuser
 
-Configuration de Nginx
+### Configuration de Nginx
 
 ajout de l'adresse du serveur dans les adresses authorisées dans *settings.py*
 
@@ -142,20 +147,16 @@ création du lien symbolique vers le fichier de configuration puis rechargement 
     sudo ln -s /home/ubuntu/oc_dapython_pr10/config/nginx/purbeurre.conf /etc/nginx/sites-enabled
     service nginx reload
 
-Lancement du serveur avec gunicorn (pour tester)
+### Configuration de supervisor
 
-    (il faut être dans le dossier *oc_dapython_pr10*)
-    pipenv run gunicorn --chdir purbeurre purbeurre.wsgi
-
-Creation du fichier de configuration de *supervisor*
+Creation du fichier de [configuration de *supervisor*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/config/supervisor/purbeurre-gunicorn.conf)
 
     [program:purbeurre]
     directory=/home/ubuntu/oc_dapython_pr10/
-    command=/home/ubuntu/.local/bin/pipenv run gunicorn --chdir purbeurre purbeurre.wsgi
+    command=/home/ubuntu/.local/bin/pipenv run gunicorn --chdir purbeurre purbeurre.wsgi:application
     autostart = true
     autorestart = true
     user=ubuntu
-
 
     [supervisord]
     environment=LC_ALL='en_US.UTF-8',LANG='en_US.UTF-8'
@@ -170,6 +171,12 @@ creation d'un lien symbolique vers le dossier de configuration
     sudo supervisorctl update
     sudo supervisorctl status
 
+
+## décomposition du settings.py pour les différents environnements
+
+ajout de environnement dans la config de supervisor
+
+creation de settings pour Heroku/aws/tests et travis
 
 
 ## Monitoring

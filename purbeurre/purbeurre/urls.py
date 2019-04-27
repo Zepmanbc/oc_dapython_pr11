@@ -20,7 +20,6 @@ from django.urls import include  # For django versions from 2.0 and up
 
 from django.views.generic import TemplateView
 
-# from products import views
 
 urlpatterns = [
     # url(r'^$', views.index, name="index"),
