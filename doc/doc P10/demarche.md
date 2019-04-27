@@ -174,10 +174,22 @@ creation d'un lien symbolique vers le dossier de configuration
 
 ## décomposition du settings.py pour les différents environnements
 
+Création de settings pour:
+
+* Heroku
+* AWS
+* Pytest 
+* Travis
+
 ajout de environnement dans la config de supervisor
 
-creation de settings pour Heroku/aws/tests et travis
+    environment = DJANGO_SETTINGS_MODULE='purbeurre.settings.aws_settings'
 
+## Mise en place de Travis
+
+[*.travis.yml*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/.travis.yml)
+
+Et ajout de [coveralls](https://coveralls.io/github/Zepmanbc/oc_dapython_pr10)
 
 ## Monitoring
 
