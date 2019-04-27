@@ -24,7 +24,7 @@ mise à jour des dépots et installation de python, postgresql, nginx
 
     sudo apt-get update
     sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
-    sudo apt-get install nginx
+    sudo apt-get install nginx supervisor
 
 copie du repo github
 
@@ -75,12 +75,12 @@ Modificationd e la partie pour les static files
 
 Création des variables d'environnement pour le mot de passe et signifier que l'on est en prod
 
-    pipenv shell
-    export ENV=AWS
-    export DB_NAME=purbeurre
-    export DB_USER=pb_sql_user
-    export DB_PASSWORD=***********
-    export SECRET_KEY=[SECRET_KEY]
+création d'un fichier *.env*
+    ENV=AWS
+    DB_NAME=purbeurre
+    DB_USER=pb_sql_user
+    DB_PASSWORD=***********
+    SECRET_KEY=[SECRET_KEY]
 
 Collecte des fichiers static, migration, collecte de produits
 
@@ -139,8 +139,30 @@ fichier de configuration Nginx (config/nginx/purbeurre.conf)
 
 création du lien symbolique vers le fichier de configuration puis rechargement de nginx
 
-    ln -s /home/ubuntu/oc_dapython_pr10/config/nginx/purbeurre.conf /etc/nginx/sites-enabled
+    sudo ln -s /home/ubuntu/oc_dapython_pr10/config/nginx/purbeurre.conf /etc/nginx/sites-enabled
     service nginx reload
+
+Lancement du serveur avec gunicorn
+
+    (il faut être dans le dossier *oc_dapython_pr10*)
+    pipenv run gunicorn --chdir purbeurre purbeurre.wsgi
+
+Creation du fichier de configuration de *supervisor*
+
+    [program:purbeurre]
+    directory=/home/ubuntu/oc_dapython_pr10/purbeurre/
+    command=pipenv run gunicorn --chdir purbeurre purbeurre.wsgi
+    autostart = true
+    autorestart = true
+
+creation d'un lien symbolique vers le dossier de configuration
+
+    sudo ln -s /home/ubuntu/oc_dapython_pr10/config/supervisor/purbeurre-gunicorn.conf /etc/supervisor/conf.d/
+    sudo supervisorctl reread
+    sudo supervisorctl update
+    sudo supervisorctl status
+
+
 
 ## Monitoring
 
