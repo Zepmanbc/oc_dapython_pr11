@@ -87,8 +87,9 @@ WSGI_APPLICATION = 'purbeurre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-from django.db.backends.mysql.base import DatabaseWrapper
-DatabaseWrapper.data_types['DateTimeField'] = 'datetime'
+if get_env_variable('ENV') == 'DEV':
+    from django.db.backends.mysql.base import DatabaseWrapper
+    DatabaseWrapper.data_types['DateTimeField'] = 'datetime'
 
 DATABASES = {
     'default': {
