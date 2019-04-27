@@ -142,7 +142,7 @@ création du lien symbolique vers le fichier de configuration puis rechargement 
     sudo ln -s /home/ubuntu/oc_dapython_pr10/config/nginx/purbeurre.conf /etc/nginx/sites-enabled
     service nginx reload
 
-Lancement du serveur avec gunicorn
+Lancement du serveur avec gunicorn (pour tester)
 
     (il faut être dans le dossier *oc_dapython_pr10*)
     pipenv run gunicorn --chdir purbeurre purbeurre.wsgi
@@ -150,10 +150,18 @@ Lancement du serveur avec gunicorn
 Creation du fichier de configuration de *supervisor*
 
     [program:purbeurre]
-    directory=/home/ubuntu/oc_dapython_pr10/purbeurre/
-    command=pipenv run gunicorn --chdir purbeurre purbeurre.wsgi
+    directory=/home/ubuntu/oc_dapython_pr10/
+    command=/home/ubuntu/.local/bin/pipenv run gunicorn --chdir purbeurre purbeurre.wsgi
     autostart = true
     autorestart = true
+    user=ubuntu
+
+
+    [supervisord]
+    environment=LC_ALL='en_US.UTF-8',LANG='en_US.UTF-8'
+
+* [faire fonctionner pipenv run avec supervisor](https://pipenv.readthedocs.io/en/latest/diagnose/#using-pipenv-run-in-supervisor-program)
+* utilisation de `which pipenv` pour connaitre le chemin absolu de *pipenv*
 
 creation d'un lien symbolique vers le dossier de configuration
 
