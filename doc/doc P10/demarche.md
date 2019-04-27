@@ -193,6 +193,19 @@ Et ajout de [coveralls](https://coveralls.io/github/Zepmanbc/oc_dapython_pr10)
 
 ## Monitoring
 
+### Mise en place de Newrelic
+
+    pipenv install newrelic
+
+création du fichier de configuration
+
+    pipenv run newrelic-admin generate-config <your-key-goes-here> newrelic.ini
+
+modification de la commande de démarrage dans supervisor
+
+    command = /home/ubuntu/.local/bin/pipenv run newrelic-admin run-program gunicorn --chdir purbeurre purbeurre.wsgi:application
+    environment = NEW_RELIC_CONFIG_FILE=/home/ubuntu/oc_dapython_pr10/newrelic.ini
+
 installation de Sentry: mettre logging django
 
 NewRelic ?

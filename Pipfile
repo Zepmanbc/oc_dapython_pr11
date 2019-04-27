@@ -8,7 +8,7 @@ flake8 = "*"
 mysqlclient = "*"
 
 [packages]
-django = "*"
+django = "==2.2"
 requests = "*"
 pytest-django = "*"
 pytest-cov = "*"
@@ -16,9 +16,11 @@ gunicorn = "*"
 django-heroku = "*"
 whitenoise = "*"
 dj-database-url = "*"
-psycopg2-binary = "*"
 selenium = "*"
+sentry-sdk = "==0.7.11"
+psycopg2-binary = "*"
 psycopg2 = "*"
+newrelic = "*"
 
 [requires]
 python_version = "3.6"

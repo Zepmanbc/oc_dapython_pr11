@@ -6,3 +6,4 @@ purbeurre/htmlcov/*
 */.pytest_cache/*
 .coverage
 geckodriver.log
+newrelic.ini
