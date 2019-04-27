@@ -34,7 +34,7 @@ installation de pipenv et installation des dépendences
 
     pip3 install pipenv
     cd oc_dapython_pr10/
-    pipenv sync
+    pipenv sync --system
 
 ### Configuration de postgres
 
@@ -68,15 +68,16 @@ Ajout de la configuration dans *settings.py*
             }
         }
 
-Modification de la partie pour les static files
+## décomposition du settings.py pour les différents environnements
 
-    if get_env_variable('ENV') == 'AWS':
-        STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+Création de settings pour:
 
-        # Extra places for collectstatic to find static files.
-        STATICFILES_DIRS = (
-            os.path.join(BASE_DIR, 'static'),
-        )
+* Heroku
+* AWS
+* Pytest 
+* Travis
+
+
 
 ### Création des variables d'environnement pour le mot de passe et signifier que l'on est en prod
 
@@ -163,6 +164,9 @@ Creation du fichier de [configuration de *supervisor*](https://github.com/Zepman
 
 * [faire fonctionner pipenv run avec supervisor](https://pipenv.readthedocs.io/en/latest/diagnose/#using-pipenv-run-in-supervisor-program)
 * utilisation de `which pipenv` pour connaitre le chemin absolu de *pipenv*
+* ajout de environnement dans la config de supervisor
+
+    environment = DJANGO_SETTINGS_MODULE='purbeurre.settings.aws_settings'
 
 creation d'un lien symbolique vers le dossier de configuration
 
@@ -170,20 +174,6 @@ creation d'un lien symbolique vers le dossier de configuration
     sudo supervisorctl reread
     sudo supervisorctl update
     sudo supervisorctl status
-
-
-## décomposition du settings.py pour les différents environnements
-
-Création de settings pour:
-
-* Heroku
-* AWS
-* Pytest 
-* Travis
-
-ajout de environnement dans la config de supervisor
-
-    environment = DJANGO_SETTINGS_MODULE='purbeurre.settings.aws_settings'
 
 ## Mise en place de Travis
 
@@ -206,9 +196,46 @@ modification de la commande de démarrage dans supervisor
     command = /home/ubuntu/.local/bin/pipenv run newrelic-admin run-program gunicorn --chdir purbeurre purbeurre.wsgi:application
     environment = NEW_RELIC_CONFIG_FILE=/home/ubuntu/oc_dapython_pr10/newrelic.ini
 
-installation de Sentry: mettre logging django
+![Tableau de bord Newrelic](img/newrelic.png)
 
-NewRelic ?
+### Mise en place de Sentry
+
+    pipenv install --upgrade sentry-sdk==0.7.11
+
+ajout de la configuration dans *settings/aws_settings.py*
+
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn="https://4cc8d88b64444388a3fbbc92cf017305@sentry.io/1445027",
+        integrations=[DjangoIntegration()]
+    )
+
+Exemple avec une url modifiée
+
+https://sentry.io/share/issue/6e936250d22a4019a08309cadfbe2f17/
+
+Mise en place du loggin sur les recherches des utilisateurs
+
+[*purbeurre/products/views.py*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/products/views.py)
+
+    from sentry_sdk import capture_message, configure_scope
+    (...)
+    class SearchView(ListView):
+    (...)
+    def get_queryset(self):
+        with configure_scope() as scope:
+            if '_auth_user_id' in self.request.session._session:
+                scope.user = {
+                    "email": User.objects.get(pk=self.request.session._session['_auth_user_id']).email
+                }
+            scope.level = 'info'
+            capture_message('New search')
+
+        return Product.objects.filter(
+            product_name__icontains=self.request.GET['query']).\
+                order_by('product_name')
 
 ## Automatisations
 

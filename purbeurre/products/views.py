@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, DeleteView, RedirectView
 
+from sentry_sdk import capture_message, configure_scope
+
 from authentication.models import User
 from .models import Product, Substitute
 # Create your views here.
@@ -15,6 +17,14 @@ class SearchView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
+        with configure_scope() as scope:
+            if '_auth_user_id' in self.request.session._session:
+                scope.user = {
+                    "email": User.objects.get(pk=self.request.session._session['_auth_user_id']).email
+                }
+            scope.level = 'info'
+            capture_message('New search')
+
         return Product.objects.filter(
             product_name__icontains=self.request.GET['query']).\
                 order_by('product_name')
@@ -24,7 +34,6 @@ class SearchView(ListView):
         context['title'] = self.request.GET['query']
         context['target'] = 'products:result'
         return context
-
 
 class ResultView(ListView):
     """Return substitutes with same category and better/equal nutrigrade."""
