@@ -10,7 +10,7 @@ Docker?
 
 ### Création d'un instance EC2 sur AWS
 
-![Sléléction d'un image Ubuntu](img/serveur_ubuntu.png)
+![Séléction d'une image Ubuntu](img/serveur_ubuntu.png)
 
 Modification du "Groupe de sécurité" pour permettre l'entrée en HTTP (port 80)
 
