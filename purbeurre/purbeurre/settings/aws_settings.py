@@ -1,5 +1,13 @@
 from . import *
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://4cc8d88b64444388a3fbbc92cf017305@sentry.io/1445027",
+    integrations=[DjangoIntegration()]
+)
+
 DEBUG = False
 ALLOWED_HOSTS = ['18.222.24.163']
 
