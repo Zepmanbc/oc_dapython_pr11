@@ -36,9 +36,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = get_env_variable('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if get_env_variable('ENV') == 'PRODUCTION':
+if os.environ.get('ENV') in ['PRODUCTION', 'AWS'] :
     DEBUG = False
-    ALLOWED_HOSTS = ['bc-ocdapythonpr8.herokuapp.com']
+    ALLOWED_HOSTS = ['bc-ocdapythonpr8.herokuapp.com', '18.222.24.163']
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0']
@@ -66,8 +66,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+if get_env_variable('ENV') != 'AWS':
+    MIDDLEWARE.append('whitenoise.middleware.WhiteNoiseMiddleware')
 
 ROOT_URLCONF = 'purbeurre.urls'
 
@@ -179,7 +181,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 
-if os.environ.get('ENV') in ['PRODUCTION', 'AWS'] :
+if os.environ.get('ENV') == 'PRODUCTION' :
 
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -191,3 +193,11 @@ if os.environ.get('ENV') in ['PRODUCTION', 'AWS'] :
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
     django_heroku.settings(locals())
+
+if get_env_variable('ENV') == 'AWS':
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    # Extra places for collectstatic to find static files.
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+    )
