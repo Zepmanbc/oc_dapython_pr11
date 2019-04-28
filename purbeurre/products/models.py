@@ -21,7 +21,7 @@ class Product(models.Model):
     url = models.URLField()
     category = models.CharField(max_length=20)
     last_modified_t = models.IntegerField(default=0)
-    id_off = models.BigIntegerField(default=0)
+    id_off = models.CharField(max_length=20)
 
     def __str__(self):
         return self.product_name

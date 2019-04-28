@@ -65,8 +65,11 @@ class Command(BaseCommand):
         """Update product on database"""
         if self.check_if_exist(productdb.id_off):
             off_data = self.get_product_from_off(productdb.id_off)
-            if productdb.last_modified_t < off_data['last_modified_t']:
-                self.update_database(productdb, off_data)
+            if off_data:
+                if productdb.last_modified_t < off_data['last_modified_t']:
+                    self.update_database(productdb, off_data)
+            else:
+                print('chelou')
 
 
     def get_products(self, categ, product_qty):
@@ -154,7 +157,7 @@ class Command(BaseCommand):
                 url=cln_product['url'],
                 category=categ,
                 last_modified_t=cln_product['last_modified_t'],
-                id_off=int(cln_product['code']),
+                id_off=cln_product['code'],
             )
             p.save()
 
@@ -164,7 +167,7 @@ class Command(BaseCommand):
         """Check if product allreadyexist in Database.
         
         args:
-            id_off (int): code of OpenFoodFacts
+            id_off (str): code of OpenFoodFacts
 
         return:
             True/False if in the Database
@@ -182,7 +185,7 @@ class Command(BaseCommand):
         """Get product from OpenFoodFacts with code.
 
         args:
-            code (int): id of a product on OpenFoodFacts
+            code (str): id of a product on OpenFoodFacts
         
         return:
             False : if does not exists
