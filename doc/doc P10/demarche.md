@@ -1,10 +1,8 @@
 # Déployez votre application sur un serveur comme un pro !
 
-intégration continu: Travis (déjà fait lors du P8)
+[Application déployée sur AWS](http://18.222.24.163/)
 
-## Simuler un serveur de production en local
-
-Docker?
+[Tableau Trello](https://trello.com/b/OKalfHad/ocdapythonpr10)
 
 ## Déploiement
 
@@ -22,7 +20,7 @@ connection ssh:
 
 mise à jour des dépots et installation de python, postgresql, nginx et supervisor
 
-    sudo apt-get update
+    sudo apt-get update && sudo apt-get upgrade
     sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
     sudo apt-get install nginx supervisor
 
@@ -72,12 +70,11 @@ Ajout de la configuration dans *settings.py*
 
 Création de settings pour:
 
-* Heroku
-* AWS
-* Pytest 
-* Travis
-
-
+* [le développement (version de base)]
+* [Heroku]
+* [AWS]
+* [Pytest] 
+* [Travis]
 
 ### Création des variables d'environnement pour le mot de passe et signifier que l'on est en prod
 
@@ -178,6 +175,8 @@ creation d'un lien symbolique vers le dossier de configuration
 ## Mise en place de Travis
 
 [*.travis.yml*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/.travis.yml)
+
+![travis.yml](img/config_travis.png)
 
 Et ajout de [coveralls](https://coveralls.io/github/Zepmanbc/oc_dapython_pr10)
 

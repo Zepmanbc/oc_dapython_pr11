@@ -20,6 +20,8 @@ class Product(models.Model):
     image_url = models.URLField()
     url = models.URLField()
     category = models.CharField(max_length=20)
+    last_modified_t = models.IntegerField(default=0)
+    id_off = models.BigIntegerField(default=0)
 
     def __str__(self):
         return self.product_name
