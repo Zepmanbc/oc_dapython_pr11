@@ -68,8 +68,7 @@ class Command(BaseCommand):
             if off_data:
                 if productdb.last_modified_t < off_data['last_modified_t']:
                     self.update_database(productdb, off_data)
-            else:
-                print('chelou')
+                    self.stdout.write(self.style.SUCCESS("Update - {}".format(productdb.product_name)))
 
 
     def get_products(self, categ, product_qty):
