@@ -238,10 +238,15 @@ Mise en place du loggin sur les recherches des utilisateurs
 
 ## Automatisations
 
-Créez une tâche Cron qui mettra à jour les éléments récupérés d’Open Food Facts une fois par semaine.
+Script qui lance la mise à jour des données : *update_job.sh*
 
-On va perdre les liens?!
+    cd ~/oc_dapython_pr10/
+    echo $(date) >> ~/log.txt
+    ~/.local/bin/pipenv run purbeurre/manage.py fillindb 0 >> ~/log.txt 2>&1
 
+Tache cron qui s'exécute toutes les semaines
+
+    @weekly ~/oc_dapython_pr10/config/update_job.sh 
 
 ## "Auto-fork" du projet P8
 
