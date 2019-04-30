@@ -1,388 +1,253 @@
-# Créez une plateforme pour amateurs de Nutella
+# Déployez votre application sur un serveur comme un pro !
 
-## 1 - Planification du projet
+[Application déployée sur AWS](http://18.222.24.163/)
 
-[Dépot Github](https://github.com/Zepmanbc/oc_dapython_pr8)
+[Tableau Trello](https://trello.com/b/OKalfHad/ocdapythonpr10)
 
-[Tableau Trello](https://trello.com/invite/b/HjxFQIEN/e531e67f68bfe12dcc2c9b96dd546097/ocdapythonpr8)
+## Déploiement
 
-[Analyse fonctionnelle](https://github.com/Zepmanbc/oc_dapython_pr8/blob/master/doc/analyse_fonctionnelle.md)
+### Création d'une instance EC2 sur AWS
 
-[Application sur Heroku](https://bc-ocdapythonpr8.herokuapp.com/)
+![Séléction d'une image Ubuntu](img/serveur_ubuntu.png)
 
-## 2 - Création d'un nouveau projet Django
+Modification du "Groupe de sécurité" pour permettre l'entrée en HTTP (port 80)
 
-création d'un environnement virtuel avec pipenv puis installation du packet django 2.2
+Récupération du fichier *pem*
 
-Création du projet
+Connexion ssh:
 
-    django-admin startproject purbeurre
-    cd purbeurre
-    manage.py startapp
+    ssh -i "~/.AWS/zepman_air13.pem" ubuntu@ec2-18-222-24-163.us-east-2.compute.amazonaws.com
 
-création de variables d'environnement
+Mise à jour des dépôts et installation de python, postgresql, nginx et supervisor
 
-*.env*
+    sudo apt-get update && sudo apt-get upgrade
+    sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
+    sudo apt-get install nginx supervisor
 
-    ENV=DEV
-    SECRET_KEY= [SECRETKEY]
+Copie du repo github
+
+    git clone https://github.com/Zepmanbc/oc_dapython_pr10.git
+
+Installation de pipenv et installation des dépendences
+
+    pip3 install pipenv
+    cd oc_dapython_pr10/
+    pipenv sync --system
+
+### Configuration de postgres
+
+Creation d'un utilisateur et d'une base dans postgres
+
+    sudo -u postgres psql
+    CREATE DATABASE purbeurre;
+    CREATE USER pb_sql_user WITH PASSWORD '***********';
+
+Modifications pour améliorer la performance des requêtes (cf tuto)
+
+    ALTER ROLE pb_sql_user SET client_encoding TO 'utf8';
+    ALTER ROLE pb_sql_user SET default_transaction_isolation TO 'read committed';
+    ALTER ROLE pb_sql_user SET timezone TO 'Europe/Paris';
+
+Donne les droits à l'utilisateur sur la base *purbeurre*
+
+    GRANT ALL PRIVILEGES ON DATABASE purbeurre TO pb_sql_user;
+
+Ajout de la configuration dans *settings.py*
+
+    elif get_env_variable('ENV') == 'AWS':
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': get_env_variable('DB_NAME'),
+                'USER': get_env_variable('DB_USER'),
+                'PASSWORD': get_env_variable('DB_PASSWORD'),
+                'HOST': 'localhost',
+                'PORT': '5432',
+            }
+        }
+
+## Décomposition du settings.py pour les différents environnements
+
+Création de settings pour:
+
+* [le développement (version de base)](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/__init__.py)
+* [Heroku](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/heroku_settings.py)
+* [AWS](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/aws_settings.py)
+* [Pytest](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/test_settings.py)
+* [Travis](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/travis_settings.py)
+
+### Création des variables d'environnement pour le mot de passe et signifier que l'on est en prod
+
+Création d'un fichier *.env*
+    ENV=AWS
     DB_NAME=purbeurre
-    DB_USER=root
-    DB_PASSWORD=root
-
-Modification du fichier de configuration
-
-* Langue et fuseau horaire
-* Configuration PROD/DEV
-* Ajout de la fonction `get_env_variable()`
-* Configuration de la base de donnée
-
-Création des dossiers static et templates
-
-    └── purbeurre
-       ├── authentication................=> Authentication application
-       │   ├── __init__.py
-       │   ├── admin.py
-       │   ├── apps.py
-       │   ├── forms.py
-       │   ├── migrations
-       │   ├── models.py
-       │   ├── static
-       │   ├── templates
-       │   │   ├── authentication
-       │   │   │   ├── account.html
-       │   │   │   └── register.html
-       │   │   └── registration
-       │   │       └── login.html
-       │   ├── tests
-       │   │   ├── __init__.py
-       │   │   ├── test_account.py
-       │   │   ├── test_login.py
-       │   │   ├── test_logout.py
-       │   │   └── test_register.py
-       │   ├── urls.py
-       │   └── views.py
-       ├── products......................=> Products application
-       │   ├── __init__.py
-       │   ├── admin.py
-       │   ├── apps.py
-       │   ├── management
-       │   │   └── commands
-       │   │       └── fillindb.py
-       │   ├── migrations
-       │   ├── models.py
-       │   ├── templates
-       │   │   └── products
-       │   │       ├── base_product_title_img.html
-       │   │       ├── detail.html
-       │   │       ├── myproducts.html
-       │   │       ├── result.html
-       │   │       ├── search.html
-       │   │       └── substitute_confirm_delete.html
-       │   ├── tests
-       │   │   ├── __init__.py
-       │   │   ├── pytest_fixture.py
-       │   │   ├── test_delete.py
-       │   │   ├── test_detail.py
-       │   │   ├── test_myproducts.py
-       │   │   ├── test_result.py
-       │   │   ├── test_save.py
-       │   │   └── test_search.py
-       │   ├── urls.py
-       │   └── views.py
-       ├── purbeurre.....................=> Project folder
-       │   ├── __init__.py
-       │   ├── settings.py
-       │   ├── static
-       │   ├── tests
-       │   │   ├── __init__.py
-       │   │   └── test_purbeurre.py
-       │   ├── test_settings.py
-       │   ├── urls.py
-       │   └── wsgi.py
-       ├── manage.py
-       ├── pytest.ini
-       ├── static	....................=> core statics
-       └── templates....................=> core templates
+    DB_USER=pb_sql_user
+    DB_PASSWORD=***********
+    SECRET_KEY=[SECRET_KEY]
 
+### Collecte des fichiers static, migration, collecte de produits
 
----
+    pipenv run purbeurre/manage.py collectstatic
+    pipenv run purbeurre/manage.py migrate
+    pipenv run purbeurre/manage.py fillindb 50
 
-## 3 - Mise en place du Front
+### Creation d'un super utilisateur
 
-Réalisation de 5 pages à partir du template pour correspondre au cahier des charges. (doc/front/*)
+    pipenv run purbeurre/manage.py createsuperuser
 
-* Accueil
-* Résultats / Mes aliments
-* Page Aliment
-* Mon Compte
-* Mention légales
+### Configuration de Nginx
 
-Découpage avec une partie base et différents blocs.
+Ajout de l'adresse du serveur dans les adresses autorisées dans *settings.py*
 
----
+    if os.environ.get('ENV') in ['PRODUCTION', 'AWS'] :
+        DEBUG = False
+        ALLOWED_HOSTS = ['bc-ocdapythonpr8.herokuapp.com', '18.222.24.163']
 
-## 4 - Purbeurre
+Suppression de whitenoise pour servir les fichiers static
 
-C'est le module principal du projet.
+    if get_env_variable('ENV') != 'AWS':
+        MIDDLEWARE.append('whitenoise.middleware.WhiteNoiseMiddleware')
 
-il y a les composants communs dans les dossiers *template* et *static*.
+    (...)
 
+    if get_env_variable('ENV') == 'AWS':
+        STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-### index : la page d'accueil du site
+        # Extra places for collectstatic to find static files.
+        STATICFILES_DIRS = (
+            os.path.join(BASE_DIR, 'static'),
+        )
+Fichier de configuration Nginx (config/nginx/purbeurre.conf)
 
-J'ai utilisé la vue générique `TemplateView` directement dans `urlpatterns` en définissant le *template* cible.
+    server {
 
-    urlpatterns = [
-        path('', TemplateView.as_view(template_name='products/index.html'), name='index'),
-    ]
+        listen 80;
+        server_name 18.222.24.163;
+        root /home/ubuntu/oc_dapython_pr10/purbeurre/
 
-J'ai placé ici et procédé de même pour la page de mentions légales.
+        location / {
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_redirect off;
+            if (!-f $request_filename) {
+                proxy_pass http://127.0.0.1:8000;
+                break;
+            }
+        }
 
-Il y a également l'import des *ulrpattern* des application sont préfixées.
-
----
-
-### Compétences acquises sur ce module.
-
-* Utilisation de vue générique directement dans `urlpatterns` (*index*)
-
-## 5 - Authentification
-
-Ce module permet d'adapter le module *User* intégré à Django pour l'utiliser avec l'adresse email à la place du *username*
-
-[purbeurre/authentication/models.py](https://github.com/Zepmanbc/oc_dapython_pr8/blob/master/purbeurre/authentication/models.py)
-
-Surcharge du model *User* afin de l'utiliser avec l'adresse email. Il a fallut créer un *Manager* pour ce changement: `MyUserManager`
-
----
-
-### login : permet à l'utilisateur de se connecter
-
-    urlpatterns = [
-        path('login/', auth_views.LoginView.as_view(), name='login'),
-    ]
-
-J'ai utilisé la vue générique `LoginView` qui appelle le template `registration/login.html` par défaut. 
-
----
-
-### logout : déconnecte l'utilisateur.
-
-J'ai utilisé le décorateur `@login_required` qui permet de renvoyer vers l'adresse définie dans `settings.LOGIN_URL` si l'utilisateur n'est pas authentifié.
-
-J'ai utilisé le raccourci `redirect`.
-
-    @login_required
-    def LogoutView(request):
-        logout(request)
-        return redirect('products:index')
-
----
-
-### register :  création d'un utilisateur.
-
-J'ai utilisé la vue générique `FormView` et le formulaire générique `UserCreationForm` qu'il a fallut adapter pour prendre en compte l'*email* à la place de *username*.
-
-Utilisation de la méthode `form_valid` pour enregistrer le formulaire
-
----
-
-### account : affichage de la page d'information sur l'utilisateur.
-
-J'ai utilisé le Mixin `LoginRequiredMixin` pour vérifier que l'utilisateur est bien connecté.
-
-Utilisation de la méthode `get` pour afficher la page et récupérer les informations sur l'utilisateur (en session dans `request`).
-
----
-
-### Compétences acquises sur ce module.
-
-* Surcharge de *model* de base de Django (*User*)
-* Utilisation de vues génériques (*LoginView*, *FormView*)
-* Utilisation de formulaire générique et adaptation (*UserCreationForm*)
-* Utilisation de la vérification d'authentification de 2 manières (décorateur pour les "vues fonctions" et Mixin pour les "vues class")
-* Utilisation de raccourcis (*render*, *redirect*)
-* Utilisation de CBV (*AccountView*, *RegisterView*)
-
----
-
-## 6 - Products
-
-Mise en place d'une commande personnalisée `django-admin` pour peupler la base de donnée
-
-    └── products
-       └── management
-           └── commands
-               └── fillindb.py
-
-La commande:
-
-    python manage.py fillindb 50
-
----
-
-### search : recherche d'un produit dans la base.
-
-J'ai utilisé une vue générique `ListView`.
-
-* Je récupère l'élément à rechercher *query* qui est une requete `GET`
-* Je définie la requete dans la base de donnée avec la méthode `get_queryset`
-* Je rajoute des éléments à `context` pour mon template avec la methode `get_context_data`
-
-[products/search.html](https://github.com/Zepmanbc/oc_dapython_pr8/blob/master/purbeurre/products/templates/products/search.html)
-
-Je fais une boucle sur `object_list` pour afficher les produits.
-
-Il y a un test sur `object_list` pour afficher un message si la requete ne renvoie rien.
-
-Mise en place de la pagination pour afficher des pages de 9 produits.
-
----
-
-### result : recherche de produits de substitution dans la base.
-
-J'ai utilisé une vue générique `ListView`.
-
-Requête sur la liste de produit:
-
-    Product.objects\
-        .filter(category=self.product.category)\
-        .filter(nutrition_grades__lte=self.product.nutrition_grades)\
-        .exclude(id=self.kwargs['product_id'])\
-        .order_by('nutrition_grades')[:9]
-
-1. Filtre sur la même catégorie que le produit d'origine
-1. Filtre sur un *nutrition_grades* supérieur ou égal
-1. Exclusion du produit d'origine
-1. Classement par *nutrition_grades* (ordre croissant) et limitation aux 9 premiers produits
-
-Récupération de la variable dans l'url
-
-url.py
-
-    path('<int:product_id>/result/', views.ResultView.as_view(), name='result'),
-
-views.py
-
-    self.product = Product.objects.get(pk=self.kwargs['product_id'])
-
-Affichage d'un message si le produit à déjà été enregistré
-
-1. récupération de *allreadysaved* dans `self.request.GET`
-1. ajout dans `context`
-1. test dans [product/result.html](https://github.com/Zepmanbc/oc_dapython_pr8/blob/master/purbeurre/products/templates/products/result.html) pour afficher le message
-
----
-
-### detail : affiche les détail d'un produit.
-
-J'ai utilisé une vue générique `DetailView`.
-
-La requête se fait sur la clé primaire qui arrive dans l'url : `<int:pk>`
-    
-    rlpatterns = [
-        path('<int:pk>/detail/', views.DetailProductView.as_view(), name='detail'),
-    ]
-
-Je récupère le nom du produit dans `kwargs['object']`
-
----
-
-### myproducts : affiche les pairs de produits enregistrés.
-
-J'ai utilisé une vue générique `ListView`.
-
-Il y a une requête sur la table `Substitute` filtré sur l'id de l'utilisateur
-
-    def get_queryset(self):
-        return Substitute.objects.filter(user_id=self.request.user.id).order_by('-id')
-
-Les données sont ensuite récupérées dans la page [products/myproducts.html](https://github.com/Zepmanbc/oc_dapython_pr8/blob/master/purbeurre/products/templates/products/myproducts.html)
-
-* object_list[0].product_id : donne accès à la table Product pour le produit d'origine
-* object_list[0].substitute_id : donne accès à la table Product pour le produit de substitution
-
-Utilisation de `LoginRequiredMixin` pour protéger la page
-
-Affichage d'un message si il n'y a pas de retour à la requête.
-
-Mise en place de la pagination pour afficher des pages de 5 substituts.
-
----
-
-### delete : supprimer une paire de produit enregistré
-
-J'ai utilisé une vue générique `DeleteView`
-
-J'ai appelé la vue avec une requête `GET` afin de pouvoir afficher une page de confirmation.
-
-le nom du template par défaut : *products/substitute_confirm_delete.html*
-
----
-
-### Compétences acquises sur ce module.
-
-* Utilisation de vue générique (`ListView`, `DetailView`, `DeleteView`)
-* Définition d'une requete spécifique dans une vue générique (`get_queryset`)
-* Ajout d'éléments à `context` dans une vue générique (`get_context_data`)
-* Requête "complexe" (result)
-* Utilisation de l'utilisateur en session pour faire une requête (*myproducts*)
-* Récupération de données sur une table `ManyToMany`
-* Utilisation du nom du template générique (*delete*)
-* Utilisation du module `Paginator`
-
----
-
-## Partie Admin
-
-Ajout de la table User dans la partie *admin*
-
-* Possibilité de modifier nom/prénom
-* *email* est en lecture seule
-* Ajout de la somme des substituts enregistrés par utilisateur
-
----
-
-## 7 - Mise en ligne
-
-### Mise en production
-
-Création de l'application sur l'interface web de Heroku puis ajout du remote
-
-    heroku git:remote -a bc-ocdapythonpr8
-
-Activation de Postgres
-
-    heroku addons:create heroku-postgresql:hobby-dev
-
-Définition de DATABASES
-
-    DATABASES = {
-        'default':
-            dj_database_url.config(conn_max_age=600, ssl_require=True)
+        location /static {
+            alias /home/ubuntu/oc_dapython_pr10/purbeurre/staticfiles/;
+        }
     }
 
-Création du [Procfile](https://github.com/Zepmanbc/oc_dapython_pr8/blob/master/Procfile)
+Création du lien symbolique vers le fichier de configuration puis rechargement de nginx
 
-Création des variables d'environnement sur Heroku
+    sudo ln -s /home/ubuntu/oc_dapython_pr10/config/nginx/purbeurre.conf /etc/nginx/sites-enabled
+    service nginx reload
 
-    heroku config:set ENV=PRODUCTION
-    heroku config:set SECRET_KEY=['%secret_key%']
+### Configuration de supervisor
 
-Envoi vers Heroku
+Création du fichier de [configuration de *supervisor*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/config/supervisor/purbeurre-gunicorn.conf)
 
-    git push heroku master
+    [program:purbeurre]
+    directory=/home/ubuntu/oc_dapython_pr10/
+    command=/home/ubuntu/.local/bin/pipenv run gunicorn --chdir purbeurre purbeurre.wsgi:application
+    autostart = true
+    autorestart = true
+    user=ubuntu
 
-Migration et peuplage de la base
+    [supervisord]
+    environment=LC_ALL='en_US.UTF-8',LANG='en_US.UTF-8'
 
-    heroku run bash
-    python purbeurre/manage.py migrate
-    python purbeurre/manage.py fillindb 50
+* [faire fonctionner pipenv run avec supervisor](https://pipenv.readthedocs.io/en/latest/diagnose/#using-pipenv-run-in-supervisor-program)
+* utilisation de `which pipenv` pour connaitre le chemin absolu de *pipenv*
+* ajout de environnement dans la config de supervisor
 
+    environment = DJANGO_SETTINGS_MODULE='purbeurre.settings.aws_settings'
 
-Mise en place de Travis : [https://travis-ci.org/Zepmanbc/oc_dapython_pr8](https://travis-ci.org/Zepmanbc/oc_dapython_pr8)
+Création d'un lien symbolique vers le dossier de configuration
 
-[.travis.yml](https://github.com/Zepmanbc/oc_dapython_pr8/blob/master/.travis.yml)
+    sudo ln -s /home/ubuntu/oc_dapython_pr10/config/supervisor/purbeurre-gunicorn.conf /etc/supervisor/conf.d/
+    sudo supervisorctl reread
+    sudo supervisorctl update
+    sudo supervisorctl status
 
-Mise en place de Coveralls : [https://coveralls.io/github/Zepmanbc/oc_dapython_pr8](https://coveralls.io/github/Zepmanbc/oc_dapython_pr8)
+## Mise en place de Travis
+
+[*.travis.yml*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/.travis.yml)
+
+![travis.yml](img/config_travis.png)
+
+Et ajout de [coveralls](https://coveralls.io/github/Zepmanbc/oc_dapython_pr10)
+
+## Monitoring
+
+### Mise en place de Newrelic
+
+    pipenv install newrelic
+
+Création du fichier de configuration
+
+    pipenv run newrelic-admin generate-config <your-key-goes-here> newrelic.ini
+
+Modification de la commande de démarrage dans supervisor
+
+    command = /home/ubuntu/.local/bin/pipenv run newrelic-admin run-program gunicorn --chdir purbeurre purbeurre.wsgi:application
+    environment = NEW_RELIC_CONFIG_FILE=/home/ubuntu/oc_dapython_pr10/newrelic.ini
+
+![Tableau de bord Newrelic](img/newrelic.png)
+
+### Mise en place de Sentry
+
+    pipenv install --upgrade sentry-sdk==0.7.11
+
+Ajout de la configuration dans *settings/aws_settings.py*
+
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn="https://4cc8d88b64444388a3fbbc92cf017305@sentry.io/1445027",
+        integrations=[DjangoIntegration()]
+    )
+
+Exemple avec une url modifiée
+
+https://sentry.io/share/issue/6e936250d22a4019a08309cadfbe2f17/
+
+Mise en place du login sur les recherches des utilisateurs
+
+[*purbeurre/products/views.py*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/products/views.py)
+
+    from sentry_sdk import capture_message, configure_scope
+    (...)
+    class SearchView(ListView):
+    (...)
+    def get_queryset(self):
+        with configure_scope() as scope:
+            if '_auth_user_id' in self.request.session._session:
+                scope.user = {
+                    "email": User.objects.get(pk=self.request.session._session['_auth_user_id']).email
+                }
+            scope.level = 'info'
+            capture_message('New search')
+
+        return Product.objects.filter(
+            product_name__icontains=self.request.GET['query']).\
+                order_by('product_name')
+
+## Automatisations
+
+Script qui lance la mise à jour des données : *update_job.sh*
+
+    cd ~/oc_dapython_pr10/
+    echo $(date) >> ~/log.txt
+    ~/.local/bin/pipenv run purbeurre/manage.py fillindb 0 >> ~/log.txt 2>&1
+
+Tache cron qui s'exécute toutes les semaines
+
+    @weekly ~/oc_dapython_pr10/config/update_job.sh
+
+le crontab sur le serveur et le log avec 1 produit qui a été mis à jour
+
+![crontab -l et log.txt](img/crontab_log.png)
