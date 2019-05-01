@@ -216,8 +216,13 @@ Mise en place du login sur les recherches des utilisateurs
 
 Script qui lance la mise à jour des données : *update_job.sh*
 
+    source ~/oc_dapython_pr10/env/bin/activate
     echo $(date) >> ~/log.txt
     python ~/oc_dapython_pr10/purbeurre/manage.py fillindb 0 >> ~/log.txt 2>&1
+
+Rendre éxécutable le script
+
+    chmod +x config/update_job.sh
 
 Tache cron qui s'exécute toutes les semaines
 
