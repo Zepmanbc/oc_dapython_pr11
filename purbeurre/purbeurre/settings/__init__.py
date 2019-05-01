@@ -15,7 +15,6 @@ import os
 from django.core.exceptions import ImproperlyConfigured
 
 import dj_database_url
-import django_heroku
 
 def get_env_variable(var_name):
     """Get the environment variable or return exception."""

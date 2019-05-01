@@ -51,11 +51,9 @@ Mise à jour des dépôts et installation de pyenv (installation et activation d
     export SECRET_KEY=[SECRET_KEY]
     export DJANGO_SETTINGS_MODULE=purbeurre.settings.aws_settings
 
-
-
 Installation des dépendences
 
-    pip install -r oc_dapython_pr10/config/requirements.txt
+    pip install -r config/requirements.txt
 
 le fichier a été obtenu avec cette commande
 
@@ -81,7 +79,7 @@ Donne les droits à l'utilisateur sur la base *purbeurre*
 
 ### Collecte des fichiers static, migration, collecte de produits
 
-    python ~/oc_dapython_pr10/manage.py collectstatic
+    python ~/oc_dapython_pr10/purbeurre/manage.py collectstatic
     python ~/oc_dapython_pr10/purbeurre/manage.py migrate
     python ~/oc_dapython_pr10/purbeurre/manage.py fillindb 50
 

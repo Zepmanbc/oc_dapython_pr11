@@ -1,4 +1,5 @@
 from . import *
+import django_heroku
 
 DEBUG = False
 ALLOWED_HOSTS = ['bc-ocdapythonpr8.herokuapp.com']
