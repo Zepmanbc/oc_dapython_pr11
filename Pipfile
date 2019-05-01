@@ -19,7 +19,6 @@ dj-database-url = "*"
 selenium = "*"
 sentry-sdk = "==0.7.11"
 psycopg2-binary = "*"
-psycopg2 = "*"
 newrelic = "*"
 
 [requires]

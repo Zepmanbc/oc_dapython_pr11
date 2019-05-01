@@ -9,7 +9,7 @@ sentry_sdk.init(
 )
 
 DEBUG = False
-ALLOWED_HOSTS = ['18.222.24.163']
+ALLOWED_HOSTS = [get_env_variable('ALLOWED_HOSTS'),]
 
 DATABASES = {
     'default': {
@@ -23,10 +23,3 @@ DATABASES = {
 }
 
 MIDDLEWARE.remove('whitenoise.middleware.WhiteNoiseMiddleware')
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
