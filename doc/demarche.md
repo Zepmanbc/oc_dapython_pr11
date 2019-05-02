@@ -77,17 +77,17 @@ Donne les droits à l'utilisateur sur la base *purbeurre*
 
     GRANT ALL PRIVILEGES ON DATABASE purbeurre TO pb_sql_user;
 
-### Collecte des fichiers static, migration, collecte de produits
+### Collecte des fichiers *static*, migration, collecte de produits
 
     python ~/oc_dapython_pr10/purbeurre/manage.py collectstatic
     python ~/oc_dapython_pr10/purbeurre/manage.py migrate
     python ~/oc_dapython_pr10/purbeurre/manage.py fillindb 50
 
-### Creation d'un super utilisateur
+### Création d'un super utilisateur
 
     python ~/oc_dapython_pr10/purbeurre/manage.py createsuperuser
 
-### Configuration de Nginx
+### Configuration de *Nginx*
 
 Fichier de configuration Nginx (config/nginx/purbeurre.conf)
 
@@ -117,7 +117,7 @@ Création du lien symbolique vers le fichier de configuration puis rechargement 
     sudo ln -s ~/oc_dapython_pr10/config/nginx/purbeurre.conf /etc/nginx/sites-enabled
     sudo service nginx reload
 
-### Configuration de supervisor
+### Configuration de *Supervisor*
 
 Création du fichier de [configuration de *supervisor*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/config/supervisor/purbeurre-gunicorn.conf)
 
@@ -144,7 +144,7 @@ Création d'un lien symbolique vers le dossier de configuration et prise en comp
     sudo supervisorctl update
     sudo supervisorctl status
 
-## Mise en place de Travis
+## Mise en place de *Travis*
 
 Fichier de configuration
 
@@ -158,7 +158,7 @@ Et ajout de [coveralls](https://coveralls.io/github/Zepmanbc/oc_dapython_pr10)
 
 ## Monitoring
 
-### Mise en place de Newrelic
+### Mise en place de *Newrelic*
 
 Création du fichier de configuration
 
@@ -171,7 +171,7 @@ Modification de la commande de démarrage dans supervisor
 
 ![Tableau de bord Newrelic](img/newrelic.png)
 
-### Mise en place de Sentry
+### Mise en place de *Sentry*
 
 installation du package
 
@@ -212,7 +212,7 @@ Mise en place du login sur les recherches des utilisateurs
             product_name__icontains=self.request.GET['query']).\
                 order_by('product_name')
 
-## Automatisations
+## Automatisations de la mise à jour des produits
 
 Script qui lance la mise à jour des données : *update_job.sh*
 
@@ -220,11 +220,11 @@ Script qui lance la mise à jour des données : *update_job.sh*
     echo $(date) >> ~/log.txt
     python ~/oc_dapython_pr10/purbeurre/manage.py fillindb 0 >> ~/log.txt 2>&1
 
-Rendre éxécutable le script
+Rendre exécutable le script
 
     chmod +x config/update_job.sh
 
-Tache cron qui s'exécute toutes les semaines
+Tache *cron* qui s'exécute toutes les semaines
 
     @weekly ~/oc_dapython_pr10/config/update_job.sh
 
