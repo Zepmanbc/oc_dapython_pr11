@@ -1,8 +1,21 @@
 # Déployez votre application sur un serveur comme un pro !
 
-[Application déployée sur AWS](http://18.222.24.163/)
+[Application déployée sur AWS](http://3.16.90.115/)
 
 [Tableau Trello](https://trello.com/b/OKalfHad/ocdapythonpr10)
+
+[Repo Github](https://github.com/Zepmanbc/oc_dapython_pr10)
+
+
+## Décomposition du `settings.py` pour les différents environnements
+
+Création de settings pour:
+
+* [le développement (version de base)](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/__init__.py)
+* [Heroku](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/heroku_settings.py)
+* [AWS](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/aws_settings.py)
+* [Pytest](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/test_settings.py)
+* [Travis](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/travis_settings.py)
 
 ## Déploiement
 
@@ -16,25 +29,37 @@ Récupération du fichier *pem*
 
 Connexion ssh:
 
-    ssh -i "~/.AWS/zepman_air13.pem" ubuntu@ec2-18-222-24-163.us-east-2.compute.amazonaws.com
+    ssh -i "~/.AWS/zepman_air13.pem" ubuntu@ec2-3-16-90-115.us-east-2.compute.amazonaws.com
 
-Mise à jour des dépôts et installation de python, postgresql, nginx et supervisor
+Mise à jour des dépôts et installation de pyenv (installation et activation de Python 3.7.2), postgresql, nginx et supervisor
 
     sudo apt-get update && sudo apt-get upgrade
-    sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
-    sudo apt-get install nginx supervisor
+    sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-contrib nginx supervisor virtualenv
 
-Copie du repo github
+### Copie du repo github et creation de l'environnement virtuel
 
     git clone https://github.com/Zepmanbc/oc_dapython_pr10.git
+    cd oc_dapython_pr10
+    virtualenv env -p python3
+    source env/bin/activate
 
-Installation de pipenv et installation des dépendences
+### Création des variables d'environnement pouvoir faire la migration
+    export ENV=AWS
+    export DB_NAME=purbeurre
+    export DB_USER=pb_sql_user
+    export DB_PASSWORD=***********
+    export SECRET_KEY=[SECRET_KEY]
+    export DJANGO_SETTINGS_MODULE=purbeurre.settings.aws_settings
 
-    pip3 install pipenv
-    cd oc_dapython_pr10/
-    pipenv sync --system
+Installation des dépendences
 
-### Configuration de postgres
+    pip install -r config/requirements.txt
+
+le fichier a été obtenu avec cette commande
+
+    pipenv run pip freeze > config/requirements.txt
+
+#### Configuration de postgres
 
 Creation d'un utilisateur et d'une base dans postgres
 
@@ -52,77 +77,24 @@ Donne les droits à l'utilisateur sur la base *purbeurre*
 
     GRANT ALL PRIVILEGES ON DATABASE purbeurre TO pb_sql_user;
 
-Ajout de la configuration dans *settings.py*
-
-    elif get_env_variable('ENV') == 'AWS':
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'NAME': get_env_variable('DB_NAME'),
-                'USER': get_env_variable('DB_USER'),
-                'PASSWORD': get_env_variable('DB_PASSWORD'),
-                'HOST': 'localhost',
-                'PORT': '5432',
-            }
-        }
-
-## Décomposition du settings.py pour les différents environnements
-
-Création de settings pour:
-
-* [le développement (version de base)](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/__init__.py)
-* [Heroku](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/heroku_settings.py)
-* [AWS](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/aws_settings.py)
-* [Pytest](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/test_settings.py)
-* [Travis](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/purbeurre/settings/travis_settings.py)
-
-### Création des variables d'environnement pour le mot de passe et signifier que l'on est en prod
-
-Création d'un fichier *.env*
-    ENV=AWS
-    DB_NAME=purbeurre
-    DB_USER=pb_sql_user
-    DB_PASSWORD=***********
-    SECRET_KEY=[SECRET_KEY]
-
 ### Collecte des fichiers static, migration, collecte de produits
 
-    pipenv run purbeurre/manage.py collectstatic
-    pipenv run purbeurre/manage.py migrate
-    pipenv run purbeurre/manage.py fillindb 50
+    python ~/oc_dapython_pr10/purbeurre/manage.py collectstatic
+    python ~/oc_dapython_pr10/purbeurre/manage.py migrate
+    python ~/oc_dapython_pr10/purbeurre/manage.py fillindb 50
 
 ### Creation d'un super utilisateur
 
-    pipenv run purbeurre/manage.py createsuperuser
+    python ~/oc_dapython_pr10/purbeurre/manage.py createsuperuser
 
 ### Configuration de Nginx
 
-Ajout de l'adresse du serveur dans les adresses autorisées dans *settings.py*
-
-    if os.environ.get('ENV') in ['PRODUCTION', 'AWS'] :
-        DEBUG = False
-        ALLOWED_HOSTS = ['bc-ocdapythonpr8.herokuapp.com', '18.222.24.163']
-
-Suppression de whitenoise pour servir les fichiers static
-
-    if get_env_variable('ENV') != 'AWS':
-        MIDDLEWARE.append('whitenoise.middleware.WhiteNoiseMiddleware')
-
-    (...)
-
-    if get_env_variable('ENV') == 'AWS':
-        STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-        # Extra places for collectstatic to find static files.
-        STATICFILES_DIRS = (
-            os.path.join(BASE_DIR, 'static'),
-        )
 Fichier de configuration Nginx (config/nginx/purbeurre.conf)
 
     server {
 
         listen 80;
-        server_name 18.222.24.163;
+        server_name 3.16.90.115;
         root /home/ubuntu/oc_dapython_pr10/purbeurre/
 
         location / {
@@ -142,8 +114,8 @@ Fichier de configuration Nginx (config/nginx/purbeurre.conf)
 
 Création du lien symbolique vers le fichier de configuration puis rechargement de nginx
 
-    sudo ln -s /home/ubuntu/oc_dapython_pr10/config/nginx/purbeurre.conf /etc/nginx/sites-enabled
-    service nginx reload
+    sudo ln -s ~/oc_dapython_pr10/config/nginx/purbeurre.conf /etc/nginx/sites-enabled
+    sudo service nginx reload
 
 ### Configuration de supervisor
 
@@ -151,32 +123,36 @@ Création du fichier de [configuration de *supervisor*](https://github.com/Zepma
 
     [program:purbeurre]
     directory=/home/ubuntu/oc_dapython_pr10/
-    command=/home/ubuntu/.local/bin/pipenv run gunicorn --chdir purbeurre purbeurre.wsgi:application
+    command=/home/ubuntu/oc_dapython_pr10/env/bin/gunicorn --chdir purbeurre purbeurre.wsgi:application
     autostart = true
     autorestart = true
     user=ubuntu
+    environment = ENV=AWS,
+        DB_NAME=purbeurre,
+        DB_USER=pb_sql_user,
+        DB_PASSWORD=***********,
+        SECRET_KEY=[SECRET_KEY],
+        DJANGO_SETTINGS_MODULE=purbeurre.settings.aws_settings
 
     [supervisord]
     environment=LC_ALL='en_US.UTF-8',LANG='en_US.UTF-8'
 
-* [faire fonctionner pipenv run avec supervisor](https://pipenv.readthedocs.io/en/latest/diagnose/#using-pipenv-run-in-supervisor-program)
-* utilisation de `which pipenv` pour connaitre le chemin absolu de *pipenv*
-* ajout de environnement dans la config de supervisor
+Création d'un lien symbolique vers le dossier de configuration et prise en compte de la nouvelle configuration
 
-    environment = DJANGO_SETTINGS_MODULE='purbeurre.settings.aws_settings'
-
-Création d'un lien symbolique vers le dossier de configuration
-
-    sudo ln -s /home/ubuntu/oc_dapython_pr10/config/supervisor/purbeurre-gunicorn.conf /etc/supervisor/conf.d/
+    sudo ln -s ~/oc_dapython_pr10/config/supervisor/purbeurre-gunicorn.conf /etc/supervisor/conf.d/
     sudo supervisorctl reread
     sudo supervisorctl update
     sudo supervisorctl status
 
 ## Mise en place de Travis
 
+Fichier de configuration
+
 [*.travis.yml*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/.travis.yml)
 
-![travis.yml](img/config_travis.png)
+Interface de Travis
+
+![travis.yml](img/travis.png)
 
 Et ajout de [coveralls](https://coveralls.io/github/Zepmanbc/oc_dapython_pr10)
 
@@ -184,22 +160,22 @@ Et ajout de [coveralls](https://coveralls.io/github/Zepmanbc/oc_dapython_pr10)
 
 ### Mise en place de Newrelic
 
-    pipenv install newrelic
-
 Création du fichier de configuration
 
-    pipenv run newrelic-admin generate-config <your-key-goes-here> newrelic.ini
+    newrelic-admin generate-config <your-key-goes-here> newrelic.ini
 
 Modification de la commande de démarrage dans supervisor
 
-    command = /home/ubuntu/.local/bin/pipenv run newrelic-admin run-program gunicorn --chdir purbeurre purbeurre.wsgi:application
+    command = /home/ubuntu/oc_dapython_pr10/env/bin/newrelic-admin run-program /home/ubuntu/oc_dapython_pr10/env/bin/gunicorn --chdir purbeurre purbeurre.wsgi:application
     environment = NEW_RELIC_CONFIG_FILE=/home/ubuntu/oc_dapython_pr10/newrelic.ini
 
 ![Tableau de bord Newrelic](img/newrelic.png)
 
 ### Mise en place de Sentry
 
-    pipenv install --upgrade sentry-sdk==0.7.11
+installation du package
+
+    pip install --upgrade sentry-sdk==0.7.11
 
 Ajout de la configuration dans *settings/aws_settings.py*
 
@@ -240,9 +216,13 @@ Mise en place du login sur les recherches des utilisateurs
 
 Script qui lance la mise à jour des données : *update_job.sh*
 
-    cd ~/oc_dapython_pr10/
+    source ~/oc_dapython_pr10/env/bin/activate
     echo $(date) >> ~/log.txt
-    ~/.local/bin/pipenv run purbeurre/manage.py fillindb 0 >> ~/log.txt 2>&1
+    python ~/oc_dapython_pr10/purbeurre/manage.py fillindb 0 >> ~/log.txt 2>&1
+
+Rendre éxécutable le script
+
+    chmod +x config/update_job.sh
 
 Tache cron qui s'exécute toutes les semaines
 
