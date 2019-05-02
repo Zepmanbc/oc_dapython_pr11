@@ -166,7 +166,7 @@ Création du fichier de configuration
 
 Modification de la commande de démarrage dans supervisor
 
-    command = /home/ubuntu/oc_dapython_pr10/env/bin/newrelic-admin run-program gunicorn --chdir purbeurre purbeurre.wsgi:application
+    command = /home/ubuntu/oc_dapython_pr10/env/bin/newrelic-admin run-program /home/ubuntu/oc_dapython_pr10/env/bin/gunicorn --chdir purbeurre purbeurre.wsgi:application
     environment = NEW_RELIC_CONFIG_FILE=/home/ubuntu/oc_dapython_pr10/newrelic.ini
 
 ![Tableau de bord Newrelic](../img/newrelic.png)
