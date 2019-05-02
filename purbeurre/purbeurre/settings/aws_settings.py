@@ -9,7 +9,7 @@ sentry_sdk.init(
 )
 
 DEBUG = False
-ALLOWED_HOSTS = ['18.222.24.163']
+ALLOWED_HOSTS = ['3.16.90.115']
 
 DATABASES = {
     'default': {

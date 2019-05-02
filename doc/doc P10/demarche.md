@@ -1,6 +1,6 @@
 # Déployez votre application sur un serveur comme un pro !
 
-[Application déployée sur AWS](http://18.222.24.163/)
+[Application déployée sur AWS](http://3.16.90.115/)
 
 [Tableau Trello](https://trello.com/b/OKalfHad/ocdapythonpr10)
 
@@ -29,7 +29,7 @@ Récupération du fichier *pem*
 
 Connexion ssh:
 
-    ssh -i "~/.AWS/zepman_air13.pem" ubuntu@ec2-18-222-24-163.us-east-2.compute.amazonaws.com
+    ssh -i "~/.AWS/zepman_air13.pem" ubuntu@ec2-3-16-90-115.us-east-2.compute.amazonaws.com
 
 Mise à jour des dépôts et installation de pyenv (installation et activation de Python 3.7.2), postgresql, nginx et supervisor
 
@@ -94,7 +94,7 @@ Fichier de configuration Nginx (config/nginx/purbeurre.conf)
     server {
 
         listen 80;
-        server_name 18.222.24.163;
+        server_name 3.16.90.115;
         root /home/ubuntu/oc_dapython_pr10/purbeurre/
 
         location / {
