@@ -2,7 +2,7 @@ from django.test import Client
 from django.urls import reverse
 
 import pytest
-from .pytest_fixture import createTwoProducts, createUser
+from .pytest_fixture import createTwoProducts, createUser, createSubstitutes, loadProducts
 
 from products.models import Product, Substitute
 from authentication.models import User
@@ -45,3 +45,10 @@ def test_myproducts_pages(createUser, createTwoProducts):
     assert response.status_code == 200
     response = client.get(reverse('products:myproducts') + '?page=2')
     assert response.status_code == 404
+
+
+def test_myproducts_pagination(loadProducts, createUser, createSubstitutes):
+    client.login(username='test@test.com', password="12345")
+    response = client.get(reverse('products:myproducts') + '?page=2')
+    good_link = '<a href="?page=1">Précédente</a>'
+    assert good_link in response.rendered_content

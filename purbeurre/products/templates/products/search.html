@@ -33,13 +33,13 @@
           <div class="pagination">
               <span class="page-links">
                   {% if page_obj.has_previous %}
-                      <a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}">Précédente</a>
+                      <a href="{{ request.path }}?query={{ query }}&page={{ page_obj.previous_page_number }}">Précédente</a>
                   {% endif %}
                   <span class="page-current">
                       Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}.
                   </span>
                   {% if page_obj.has_next %}
-                      <a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}">Suivante</a>
+                      <a href="{{ request.path }}?query={{ query }}&page={{ page_obj.next_page_number }}">Suivante</a>
                   {% endif %}
               </span>
           </div>
