@@ -58,21 +58,30 @@ code modifié
 
 ## Pull request + merge dans le master: mise en production
 
+[https://github.com/Zepmanbc/oc_dapython_pr11/pull/5](https://github.com/Zepmanbc/oc_dapython_pr11/pull/5)
 
+* Vérification de Travis
+* Acception du merge: cloture automatique de l'issue #1
+* re vérification de Travis puis mise en production sur Heroku
 
-## Bug 2 : Perte de la séléction si l'utilisateur n'est pas connecté
+## [Issue #2](https://github.com/Zepmanbc/oc_dapython_pr11/issues/2) : Perte de la séléction si l'utilisateur n'est pas connecté
 
 Création d'une branche *lostsave*
 
 ### Ecriture des tests
 
+Création d'un fichier de test spécifique à l'issue: [*test_integration_issue2.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/tests/test_integration_issue2.py)
+
+Ecriture de 2 parcours Selenium
+
+* connection
+* création de compte
+
 ### Modification du code
 
-### mise à jour du test Selenium
+### Pull request + merge dans le master: mise en production
 
-Pull request + merge dans le master: mise en production
-
-## Amélioration 1 : Modification nom/prénom
+## [Issue #3](https://github.com/Zepmanbc/oc_dapython_pr11/issues/3) : Modification nom/prénom
 
 Création d'une branche *namemodif*
 
@@ -85,7 +94,7 @@ Création d'une branche *namemodif*
 Pull request + merge dans le master: mise en production
 
 
-## Amélioration 2 : Réinitialisation du mot de passe
+## [Issue #4](https://github.com/Zepmanbc/oc_dapython_pr11/issues/4) : Réinitialisation du mot de passe
 
 Création d'une branche *resetpassword*
 
