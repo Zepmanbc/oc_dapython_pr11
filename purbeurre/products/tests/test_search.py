@@ -9,7 +9,7 @@ from products.models import Product, Substitute
 client = Client()
 pytestmark = pytest.mark.django_db
 
-from .pytest_fixture import createTwoProducts
+from .pytest_fixture import createTwoProducts, loadProducts
 
 
 def test_search_success(createTwoProducts):
@@ -36,3 +36,15 @@ def test_search_failed(createTwoProducts):
     # missing query : 500
     with pytest.raises(MultiValueDictKeyError):
         response = client.get('/products/search/')
+
+
+def test_pagination_only_one_page(loadProducts):
+    """Test if page is only one time in url.
+    Search the product, go to page 2, go to page 1
+    there mus be only one `page=1` and not `page=2&page=1`
+    """
+    response = client.get('/products/search/?query=choucroute&page=2')
+    bad_link = '<a href="/products/search/?query=choucroute&amp;page=2&page=1">Précédente</a>'
+    good_link = '<a href="/products/search/?query=choucroute&page=1">Précédente</a>'
+    assert bad_link not in response.rendered_content
+    assert good_link in response.rendered_content

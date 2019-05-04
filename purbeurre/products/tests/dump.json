@@ -1,0 +1,192 @@
+[
+{
+  "model": "products.product",
+  "pk": 1,
+  "fields": {
+    "product_name": "1898 Choucroute Royale, Au Riesling",
+    "nutrition_grades": "c",
+    "fat": "moderate",
+    "fat_100g": "8.0",
+    "saturated_fat": "moderate",
+    "saturated_fat_100g": "3.5",
+    "sugars": "low",
+    "sugars_100g": "0.2",
+    "salt": "moderate",
+    "salt_100g": "1.1",
+    "image_url": "https://static.openfoodfacts.org/images/products/304/958/053/9576/front_fr.7.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/3049580539576/1898-choucroute-royale-au-riesling-william-saurin",
+    "category": "choucroute"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 2,
+  "fields": {
+    "product_name": "La Choucroute Garnie",
+    "nutrition_grades": "c",
+    "fat": "moderate",
+    "fat_100g": "6.5",
+    "saturated_fat": "moderate",
+    "saturated_fat_100g": "2.4",
+    "sugars": "low",
+    "sugars_100g": "0.3",
+    "salt": "moderate",
+    "salt_100g": "1.0",
+    "image_url": "https://static.openfoodfacts.org/images/products/304/958/053/0160/front_fr.17.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/3049580530160/la-choucroute-garnie-william-saurin",
+    "category": "choucroute"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 3,
+  "fields": {
+    "product_name": "Choucroute garnie d'Alsace",
+    "nutrition_grades": "c",
+    "fat": "moderate",
+    "fat_100g": "11.0",
+    "saturated_fat": "moderate",
+    "saturated_fat_100g": "4.3",
+    "sugars": "low",
+    "sugars_100g": "0.0",
+    "salt": "moderate",
+    "salt_100g": "1.4",
+    "image_url": "https://static.openfoodfacts.org/images/products/324/539/006/3441/front_fr.34.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/3245390063441/choucroute-garnie-d-alsace-reflets-de-france",
+    "category": "choucroute"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 4,
+  "fields": {
+    "product_name": "P'tite Choucroute du jour",
+    "nutrition_grades": "c",
+    "fat": "moderate",
+    "fat_100g": "9.4",
+    "saturated_fat": "moderate",
+    "saturated_fat_100g": "2.9",
+    "sugars": "low",
+    "sugars_100g": "0.5",
+    "salt": "moderate",
+    "salt_100g": "1.3",
+    "image_url": "https://static.openfoodfacts.org/images/products/323/508/000/8531/front_fr.14.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/3235080008531/p-tite-choucroute-du-jour-stoeffler",
+    "category": "choucroute"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 5,
+  "fields": {
+    "product_name": "Choucroute garnie",
+    "nutrition_grades": "c",
+    "fat": "moderate",
+    "fat_100g": "6.5",
+    "saturated_fat": "moderate",
+    "saturated_fat_100g": "2.4",
+    "sugars": "low",
+    "sugars_100g": "0.3",
+    "salt": "moderate",
+    "salt_100g": "1.0",
+    "image_url": "https://static.openfoodfacts.org/images/products/304/958/053/0177/front_fr.22.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/3049580530177/choucroute-garnie-william-saurin",
+    "category": "choucroute"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 6,
+  "fields": {
+    "product_name": "Choucroute garnie",
+    "nutrition_grades": "c",
+    "fat": "moderate",
+    "fat_100g": "6.3",
+    "saturated_fat": "moderate",
+    "saturated_fat_100g": "2.3",
+    "sugars": "low",
+    "sugars_100g": "0.2",
+    "salt": "moderate",
+    "salt_100g": "1.0",
+    "image_url": "https://static.openfoodfacts.org/images/products/325/622/241/5154/front_fr.46.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/3256222415154/choucroute-garnie-u",
+    "category": "choucroute"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 7,
+  "fields": {
+    "product_name": "Choucroute cuite",
+    "nutrition_grades": "c",
+    "fat": "low",
+    "fat_100g": "0.0",
+    "saturated_fat": "low",
+    "saturated_fat_100g": "0.0",
+    "sugars": "low",
+    "sugars_100g": "0.0",
+    "salt": "moderate",
+    "salt_100g": "1.2",
+    "image_url": "https://static.openfoodfacts.org/images/products/761/080/707/7254/front_fr.3.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/7610807077254/choucroute-cuite-naturaplan",
+    "category": "choucroute"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 8,
+  "fields": {
+    "product_name": "Choucroute brasserie",
+    "nutrition_grades": "z",
+    "fat": "",
+    "fat_100g": "0.0",
+    "saturated_fat": "",
+    "saturated_fat_100g": "0.0",
+    "sugars": "",
+    "sugars_100g": "0.0",
+    "salt": "",
+    "salt_100g": "0.0",
+    "image_url": "https://static.openfoodfacts.org/images/products/324/065/006/2769/front_fr.5.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/3240650062769/choucroute-brasserie-iller",
+    "category": "choucroute"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 9,
+  "fields": {
+    "product_name": "Choucroute garnie sup\u00e9rieure",
+    "nutrition_grades": "c",
+    "fat": "moderate",
+    "fat_100g": "8.8",
+    "saturated_fat": "moderate",
+    "saturated_fat_100g": "3.3",
+    "sugars": "low",
+    "sugars_100g": "0.7",
+    "salt": "moderate",
+    "salt_100g": "1.3",
+    "image_url": "https://static.openfoodfacts.org/images/products/20021405/front_fr.25.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/20021405/choucroute-garnie-superieure-saveur-de-nos-regions",
+    "category": "choucroute"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 10,
+  "fields": {
+    "product_name": "Mon moment choucroute",
+    "nutrition_grades": "c",
+    "fat": "moderate",
+    "fat_100g": "8.7",
+    "saturated_fat": "moderate",
+    "saturated_fat_100g": "3.1",
+    "sugars": "low",
+    "sugars_100g": "0.6",
+    "salt": "moderate",
+    "salt_100g": "1.5",
+    "image_url": "https://static.openfoodfacts.org/images/products/318/095/006/3731/front_fr.8.400.jpg",
+    "url": "https://fr.openfoodfacts.org/produit/3180950063731/mon-moment-choucroute-stoeffler",
+    "category": "choucroute"
+  }
+}
+]
