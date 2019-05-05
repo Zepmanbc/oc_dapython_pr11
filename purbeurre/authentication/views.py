@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, UpdateView
 from django.contrib.auth import login, authenticate, logout
 
 from django.contrib.auth.decorators import login_required
@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from .forms import RegisterForm
+from .models import User
 
 # Create your views here.
 
@@ -46,3 +47,15 @@ def LogoutView(request):
     """Logout user."""
     logout(request)
     return redirect('index')
+
+
+class ModifyView(LoginRequiredMixin, UpdateView):
+    """Modify User infos."""
+    model = User
+    fields = ["first_name", "last_name"]
+    template_name = 'authentication/modify.html'
+    success_url = reverse_lazy('authentication:account')
+
+    def get_object(self, queryset=None):
+        obj = User.objects.get(id=self.request.user.id)
+        return obj
