@@ -113,6 +113,12 @@ test_save_user_not_logged : ajout de la vérification de création de la variabl
 
 ### Pull request + merge dans le master: mise en production
 
+[https://github.com/Zepmanbc/oc_dapython_pr11/pull/6](https://github.com/Zepmanbc/oc_dapython_pr11/pull/6)
+
+* Vérification de Travis
+* Acception du merge: cloture automatique de l'issue #2
+* re vérification de Travis puis mise en production sur Heroku
+
 ---
 
 ## [Issue #3](https://github.com/Zepmanbc/oc_dapython_pr11/issues/3) : Modification nom/prénom
@@ -140,3 +146,4 @@ Création d'une branche *resetpassword*
 ### mise à jour du test Selenium
 
 ### Pull request + merge dans le master: mise en production
+

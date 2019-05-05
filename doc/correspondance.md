@@ -16,7 +16,7 @@
 
     Colette & Rémy
 
-## Réponse le 2/05/2019
+## Email du Développeur le 2/05/2019
 
     Bonjour Colette et Rémy,
 
@@ -27,3 +27,30 @@
     Cordialement.
 
     Le développeur.
+
+
+## Email du Développeu le 5/05/2019
+
+    Bonjour Colette et Rémy,
+
+    J'ai fais les corrections demandées, elles sont déjà en production vous pouvez le vérifier par vous même (https://bc-ocdapythonpr11.herokuapp.com/).
+
+    L'implémentation des autres demandes sera fait avant la fin de semaine prochaine.
+
+    Cordialement.
+
+    Le développeur.
+
+## Email du client le 5/05/2019
+
+    Bonjour cher développeur,
+
+    Merci pour cette réactivité extraordinaire et ce travail réalisé de main de maitre (profitons d'être dans un environnement fictifs pour vous envoyer des fleurs).
+
+    Nous avons testé les corrections et tout fonctionne.
+
+    Nous avons hâte de voir les nouvelles demandes implémentées
+
+    Cordialement.
+
+    Colette & Rémy
