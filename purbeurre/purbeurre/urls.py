@@ -23,9 +23,11 @@ from . import views
 
 
 urlpatterns = [
+    path('', include('django.contrib.auth.urls')),
     path('', views.IndexView.as_view(), name='index'),
     path('legal', TemplateView.as_view(template_name='legal.html'), name='legal'),
     path('products/', include('products.urls')),
-    path('auth/', include('authentication.urls')),
+    path('accounts/', include('authentication.urls')),
     path('admin/', admin.site.urls),
+    
 ]

@@ -157,9 +157,27 @@ Création d'une branche *namemodif*
 
 Création d'une branche *resetpassword*
 
+### Modification du code
+
+* [authentication/templates/registration/login.html](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/authentication/templates/registration/login.html) : ajout du lien vers la réinitialisation de mot de passe.
+
+* Création des différents templates:
+    * password_reset_complete.html
+    * password_reset_confirm.html
+    * password_reset_done.html
+    * password_reset_email.html
+    * password_reset_form.html
+    * password_reset_subject.txt
+
+* [purbeurre/urls.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/urls.py) : modification du chemin pour authentication pour coller au générique de Django et ajout de `include('django.contrib.auth.urls')` pour toutes les vues génériques de *password_reset*
+
+* [purbeurre/settings/__init__.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/settings/__init__.py) : ajout de `EMAIL_BACKEND` pour débugger
+
+* [purbeurre/settings/heroku_settings.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/settings/heroku_settings.py) : ajout de la configuration pour utiliser *SendGrid*
+
 ### Ecriture des tests
 
-### Modification du code
+
 
 ### mise à jour du test Selenium
 
