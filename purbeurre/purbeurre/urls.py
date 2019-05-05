@@ -19,11 +19,11 @@ from django.urls import path
 from django.urls import include  # For django versions from 2.0 and up
 
 from django.views.generic import TemplateView
+from . import views
 
 
 urlpatterns = [
-    # url(r'^$', views.index, name="index"),
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    path('', views.IndexView.as_view(), name='index'),
     path('legal', TemplateView.as_view(template_name='legal.html'), name='legal'),
     path('products/', include('products.urls')),
     path('auth/', include('authentication.urls')),

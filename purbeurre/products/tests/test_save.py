@@ -1,4 +1,5 @@
 from django.test import Client
+from django.urls import reverse
 
 import pytest
 from .pytest_fixture import createTwoProducts, createUser
@@ -64,6 +65,7 @@ def test_save_user_not_logged():
             'next': '/'
         }
     )
+    assert client.session['keep_substitute']
     assert Substitute.objects.all().count() == 0
     assert response.status_code == 302
 
@@ -94,3 +96,18 @@ def test_save_post_false_id(createUser, createTwoProducts):
             }
         )
     assert Substitute.objects.all().count() == 0
+
+
+def test_save_after_login(createUser,createTwoProducts):
+    """Test the path user made a selection before connect (Issue #2)."""
+    client.login(username='test@test.com', password="12345")
+    session = client.session
+    session['keep_substitute'] = ('1', '2')
+    session.save()
+
+    assert Substitute.objects.all().count() == 0
+    response = client.get(reverse('products:save'))
+
+    assert Substitute.objects.all().count() == 1
+    assert response.url == '/products/myproducts/'
+    assert response.status_code == 302

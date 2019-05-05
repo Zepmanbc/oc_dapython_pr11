@@ -17,6 +17,9 @@ class AccountView(LoginRequiredMixin, TemplateView):
     template_name = 'authentication/account.html'
 
     def get(self, request, *args, **kwargs):
+        # Redirection to save: Issue #2 keep substitute with no connection
+        if 'keep_substitute' in request.session.keys():
+            return redirect('products:save')
         fullname = " ".join([request.user.first_name, request.user.last_name])
         context = {'fullname': fullname}
         return render(request, self.template_name, context)

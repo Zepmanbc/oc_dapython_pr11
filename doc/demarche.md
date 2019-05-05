@@ -12,6 +12,8 @@
 
 ![issues sur github](img/issues.png)
 
+---
+
 ## [Issue #1](https://github.com/Zepmanbc/oc_dapython_pr11/issues/1) : accumulation des pages lors d'une pagination
 
 Création d'une branche *pagination*
@@ -54,25 +56,66 @@ code modifié
     # Go to page 2, got to page 1 and test url
     driver.find_element_by_partial_link_text('Suivante').click()
     driver.find_element_by_partial_link_text('Précédente').click()
-    assert re.search('http:\/\/localhost:\d*\/products\/search\/\?query=choucroute&page=1', driver.current_url)
+    assert re.search(r'http://localhost:[0-9]*/products/search/\?query=choucroute&page=1', driver.current_url)
 
-## Pull request + merge dans le master: mise en production
+### Pull request + merge dans le master: mise en production
 
+[https://github.com/Zepmanbc/oc_dapython_pr11/pull/5](https://github.com/Zepmanbc/oc_dapython_pr11/pull/5)
 
+* Vérification de Travis
+* Acception du merge: cloture automatique de l'issue #1
+* re vérification de Travis puis mise en production sur Heroku
 
-## Bug 2 : Perte de la séléction si l'utilisateur n'est pas connecté
+---
+
+## [Issue #2](https://github.com/Zepmanbc/oc_dapython_pr11/issues/2) : Perte de la séléction si l'utilisateur n'est pas connecté
 
 Création d'une branche *lostsave*
 
-### Ecriture des tests
+### Ecriture des tests Selenium
+
+Création d'un fichier de test spécifique à l'issue: [*test_integration_issue2.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/tests/test_integration_issue2.py)
+
+Ecriture de 3 parcours Selenium
+
+* choix produit => choix substitut => connexion => produit sauvegardé
+* choix produit => choix substitut => création de compte => produit sauvegardé
+* choix produit => choix substitut => page index => connexion => page *Account*
 
 ### Modification du code
 
-### mise à jour du test Selenium
+Création d'une variable en session qui conserve la paire de produits. Si cette variable existe après une connexion ou un enregistrement, redirection vers la page *SaveView* qui récupère la variable en session afin d'enregistrer les produits.
 
-Pull request + merge dans le master: mise en production
+[*product/views.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/products/views.py)
 
-## Amélioration 1 : Modification nom/prénom
+    request.session['keep_substitute'] = (product_id, substitute_id)
+
+[*authentication/views.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/authentication/views.py)
+
+Ajout d'un test sur la variable en session sur *AccountView* qui est la cible des pages de connexion et d'enregistrement. Si la variable existe alors il y a redirection vers *products:save*
+
+        if 'keep_substitute' in request.session.keys():
+            return redirect('products:save')
+
+[*purbeurre/views.py*](https://github.com/Zepmanbc/oc_dapython_pr11/tree/master/purbeurre/purbeurre/views.py)
+
+Création d'une page *index* pour supprimer la variable en session
+
+### Ecriture des tests
+
+[*authentication/tests/tests_account.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/authentication/tests/test_account.py) : test_keep_substitute_redirection
+
+[*products/tests/test_save.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/products/tests/test_save.py) : test_save_after_login
+
+test_save_user_not_logged : ajout de la vérification de création de la variable en session
+
+[*purbeurre/tests/test_purbeurre.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/tests/test_purbeurre.py) : test_delete_keep_substitute_session
+
+### Pull request + merge dans le master: mise en production
+
+---
+
+## [Issue #3](https://github.com/Zepmanbc/oc_dapython_pr11/issues/3) : Modification nom/prénom
 
 Création d'une branche *namemodif*
 
@@ -82,10 +125,11 @@ Création d'une branche *namemodif*
 
 ### mise à jour du test Selenium
 
-Pull request + merge dans le master: mise en production
+### Pull request + merge dans le master: mise en production
 
+---
 
-## Amélioration 2 : Réinitialisation du mot de passe
+## [Issue #4](https://github.com/Zepmanbc/oc_dapython_pr11/issues/4) : Réinitialisation du mot de passe
 
 Création d'une branche *resetpassword*
 
@@ -95,4 +139,4 @@ Création d'une branche *resetpassword*
 
 ### mise à jour du test Selenium
 
-Pull request + merge dans le master: mise en production
+### Pull request + merge dans le master: mise en production

@@ -97,28 +97,51 @@ class DeleteSubstituteView(LoginRequiredMixin, DeleteView):
         return context
 
 
-@login_required
+# @login_required
 def SaveView(request):
     """Save product/substitute."""
     if request.method == 'POST':
         # get data from POST
+        next_url = request.POST['next']
         product_id = request.POST['product_id']
         substitute_id = request.POST['substitute_id']
-        next_url = request.POST['next']
-        # get data from DB
-        product_obj = Product.objects.get(pk=product_id)
-        substitute_obj = Product.objects.get(pk=substitute_id)
-        user_obj = User.objects.get(pk=request.user.id)
-        # test if all obj are sets
-        if product_obj and substitute_obj and user_obj:
-            # create Substitute or return "allreadysaved"
-            obj, created = Substitute.objects.get_or_create(
-                user_id=user_obj,
-                product_id=product_obj,
-                substitute_id=substitute_obj
-                )
-            if created:
+        if request.user.id:
+            # get data from DB
+            product_obj = Product.objects.get(pk=product_id)
+            substitute_obj = Product.objects.get(pk=substitute_id)
+            user_obj = User.objects.get(pk=request.user.id)
+            # test if all obj are sets
+            if product_obj and substitute_obj and user_obj:
+                # create Substitute or return "allreadysaved"
+                obj, created = Substitute.objects.get_or_create(
+                    user_id=user_obj,
+                    product_id=product_obj,
+                    substitute_id=substitute_obj
+                    )
+                if created:
+                    return redirect('products:myproducts')
+                else:
+                    return redirect(next_url+"?allreadysaved")
+        else:
+            request.session['keep_substitute'] = (product_id, substitute_id)
+            return redirect('authentication:login')
+
+    # if user was not connected, keep_substitue is in session
+    elif 'keep_substitute' in request.session.keys():
+        (product_id, substitute_id) = request.session['keep_substitute']
+        del request.session['keep_substitute']
+        if request.user.id:
+            # get data from DB
+            product_obj = Product.objects.get(pk=product_id)
+            substitute_obj = Product.objects.get(pk=substitute_id)
+            user_obj = User.objects.get(pk=request.user.id)
+            # test if all obj are sets
+            if product_obj and substitute_obj and user_obj:
+                # create Substitute or return "allreadysaved"
+                obj, created = Substitute.objects.get_or_create(
+                    user_id=user_obj,
+                    product_id=product_obj,
+                    substitute_id=substitute_obj
+                    )
                 return redirect('products:myproducts')
-            else:
-                return redirect(next_url+"?allreadysaved")
     return redirect('index')

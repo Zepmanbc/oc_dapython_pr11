@@ -1,7 +1,10 @@
 from django.test import Client
 from django.urls import reverse
 
+import pytest
+
 client = Client()
+pytestmark = pytest.mark.django_db
 
 
 def test_index_page_name():
@@ -32,3 +35,16 @@ def test_fake_page_url():
     # index return 404
     response = client.get('/zzNotExistPaGe').status_code
     assert response == 404
+
+
+def test_delete_keep_substitute_session():
+    """test if session variable 'keep_substitute' is deleted (Issue #2)"""
+    client.get(reverse('index'))
+
+    session = client.session
+    session['keep_substitute'] = ('1', '2')
+    session.save()
+    assert client.session['keep_substitute']
+    client.get(reverse('index'))
+    with pytest.raises(KeyError):
+        client.session['keep_substitute']
