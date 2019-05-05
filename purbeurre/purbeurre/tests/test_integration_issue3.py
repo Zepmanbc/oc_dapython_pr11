@@ -1,13 +1,9 @@
 import os
 import time
 
-from django.core import serializers
-
 import pytest
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 
-from products.models import Substitute
 from authentication.models import User
 
 
@@ -42,13 +38,15 @@ def test_modify_user_infos(live_server, driver, createUser):
     assert '/modify/' in driver.current_url
     driver.find_element_by_id('id_first_name').send_keys("firstname")
     driver.find_element_by_id('id_last_name').send_keys("lastname")
-    u = User.objects.get(pk=1)
+    time.sleep(1)
+    u = User.objects.all()[0]
     assert u.first_name == ''
     assert u.last_name == ''
     driver.find_element_by_id('id_last_name').submit()
     time.sleep(1)
-    u = User.objects.get(pk=1)
+    u = User.objects.all()[0]
     assert u.first_name == 'firstname'
     assert u.last_name == 'lastname'
     assert '/account/' in driver.current_url
-    assert '<h1 class="text-white font-weight-bold">Firstname Lastname</h1>' in driver.page_source
+    title_text = '<h1 class="text-white font-weight-bold">Firstname Lastname</h1>'
+    assert title_text in driver.page_source
