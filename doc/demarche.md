@@ -125,13 +125,31 @@ test_save_user_not_logged : ajout de la vérification de création de la variabl
 
 Création d'une branche *namemodif*
 
+### Modification du code
+
+* [*authentication/urls.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/authentication/urls.py) : ajout du chemin vers la vue *modify*
+
+* [*authentication/views.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/authentication/views.py) : ajout de *ModifyView*
+
+* [*authentication/templates/authentication/modify.html*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/authentication/templates/authentication/modify.html) : création du template pour la vue
+
+* [*authentication/templates/authentication/account.html*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/authentication/templates/authentication/account.html) : ajout d'un bouton pour aller vers la page de modification
+
 ### Ecriture des tests
 
-### Modification du code
+[*authentication/tests/test_modify.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/authentication/tests/test_modify.py) : Test de la modification des données dans la base de donnée et redirection
 
 ### mise à jour du test Selenium
 
+[purbeurre/tests/test_integration_issue2.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/tests/test_integration_issue2.py) : parcours de modification des données
+
 ### Pull request + merge dans le master: mise en production
+
+[https://github.com/Zepmanbc/oc_dapython_pr11/pull/7](https://github.com/Zepmanbc/oc_dapython_pr11/pull/7)
+
+* Vérification de Travis
+* Acception du merge: cloture automatique de l'issue #3
+* re vérification de Travis puis mise en production sur Heroku
 
 ---
 
