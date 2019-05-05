@@ -41,7 +41,7 @@ def test_issue2_path_connect(live_server, driver, createUser, loadProducts):
     index_query = driver.find_element_by_css_selector('.masthead input')
     index_query.send_keys("choucroute")
     index_query.submit()
-    time.sleep(1)
+    time.sleep(3)
     # select product
     prod2 = driver.find_elements_by_css_selector('.product-thumb img')[1]
     prod2.click()
@@ -66,7 +66,7 @@ def test_issue2_path_register(live_server, driver, loadProducts):
     index_query = driver.find_element_by_css_selector('.masthead input')
     index_query.send_keys("choucroute")
     index_query.submit()
-    time.sleep(1)
+    time.sleep(2)
     # select product
     prod2 = driver.find_elements_by_css_selector('.product-thumb img')[1]
     prod2.click()
@@ -91,3 +91,33 @@ def test_issue2_path_register(live_server, driver, loadProducts):
     # redirect to my product and substitute saved
     assert '/myproducts/' in driver.current_url
     assert Substitute.objects.count()
+
+
+def test_issue2_path_return_index(live_server, driver, createUser, loadProducts):
+    """test if user go back to index, session var is destroyed"""
+    # not connected, search 'choucroute'
+    driver.get(live_server.url)
+    index_query = driver.find_element_by_css_selector('.masthead input')
+    index_query.send_keys("choucroute")
+    index_query.submit()
+    time.sleep(2)
+    # select product
+    prod2 = driver.find_elements_by_css_selector('.product-thumb img')[1]
+    prod2.click()
+    time.sleep(1)
+    # save substitute
+    driver.find_elements_by_class_name('fa-save')[0].click()
+    # redirect to connect page => connect but go to index
+    # Click on logo
+    driver.find_elements_by_tag_name('a')[0].click()
+    time.sleep(1)
+    # click on Account picture
+    driver.find_elements_by_tag_name('a')[1].click()
+    # Fill in connection form
+    driver.find_element_by_id('id_username').send_keys("test@test.com")
+    driver.find_element_by_id('id_password').send_keys("12345")
+    driver.find_element_by_id('id_password').submit()
+    time.sleep(1)
+    # redirect to my product and substitute saved
+    assert '/account/' in driver.current_url
+    assert not Substitute.objects.count()

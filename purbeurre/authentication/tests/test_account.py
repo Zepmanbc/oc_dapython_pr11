@@ -24,3 +24,19 @@ def test_loggedin_user():
 
     response = client.get(reverse('authentication:account')).status_code
     assert response == 200
+
+
+def test_keep_substitute_redirection():
+    """Test if user had a substitute save before connect. Issue #2"""
+    user = User.objects.create(email='test@test.com')
+    user.set_password('12345')
+    user.save()
+
+    client.login(email="test@test.com", password="12345")
+
+    session = client.session
+    session['keep_substitute'] = ('1', '2')
+    session.save()
+
+    response = client.get(reverse('authentication:account')).status_code
+    assert response == 302
