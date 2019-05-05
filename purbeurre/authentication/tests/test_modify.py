@@ -31,7 +31,7 @@ def test_modify_basic(createUser):
             {'first_name': 'prenom', 'last_name': 'nom'}
         )
     assert response.status_code == 302
-    assert response.url == '/auth/account/'
+    assert response.url == '/accounts/account/'
     u = User.objects.get(pk=1)
     assert u.first_name == 'prenom'
     assert u.last_name == 'nom'

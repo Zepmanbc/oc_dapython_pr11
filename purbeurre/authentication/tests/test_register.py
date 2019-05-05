@@ -17,9 +17,9 @@ def createUser():
 
 
 def test_register_url():
-    response = client.get('/auth/register/')
+    response = client.get('/accounts/register/')
     assert response.status_code == 200
-    assert reverse('authentication:register') == '/auth/register/'
+    assert reverse('authentication:register') == '/accounts/register/'
 
 
 def test_register_success():
