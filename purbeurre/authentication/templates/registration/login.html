@@ -24,7 +24,12 @@
         {% endif %}
         <button type="submit">Enregistrer</button>
       </form>
-      <p class="py-3"><a href="{% url 'authentication:register' %}">Creer un compte</a></p>
+    </div>
+    <div class="row auth-form py-3 mx-1">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="{% url 'authentication:register' %}">Creer un compte</a></li>
+        <li class="list-group-item"><a href="{% url 'password_reset' %}">Mot de passe oublié?</a></li>
+      </ul>
     </div>
   </div>
 </section>

@@ -34,7 +34,7 @@ def test_modify_user_infos(live_server, driver, createUser):
     # Test if Account page
     assert '/account/' in driver.current_url
     driver.find_elements_by_tag_name('button')[1].click()
-    time.sleep(1)
+    time.sleep(2)
     assert '/modify/' in driver.current_url
     driver.find_element_by_id('id_first_name').send_keys("firstname")
     driver.find_element_by_id('id_last_name').send_keys("lastname")

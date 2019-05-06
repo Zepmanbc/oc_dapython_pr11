@@ -17,9 +17,9 @@ def createUser():
 
 
 def test_login_url():
-    response = client.get('/auth/login/')
+    response = client.get('/accounts/login/')
     assert response.status_code == 200
-    assert reverse('authentication:login') == '/auth/login/'
+    assert reverse('authentication:login') == '/accounts/login/'
 
 
 def test_login_success(createUser):
