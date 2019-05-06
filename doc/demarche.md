@@ -6,6 +6,8 @@
 
 [Site en ligne](https://bc-ocdapythonpr11.herokuapp.com/)
 
+[Correspondance avec le client](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/doc/correspondance.md)
+
 ## Création des *issues* sur Github
 
 [https://github.com/Zepmanbc/oc_dapython_pr11/issues](https://github.com/Zepmanbc/oc_dapython_pr11/issues)
@@ -27,7 +29,7 @@ Création d'une branche *pagination*
     def test_pagination_only_one_page(loadProducts):
         """Test if page is only one time in url.
         Search the product, go to page 2, go to page 1
-        there mus be only one `page=1` and not `page=2&page=1`
+        there must be only one `page=1` and not `page=2&page=1`
         """
         response = client.get('/products/search/?query=choucroute&page=2')
         bad_link = '<a href="/products/search/?query=choucroute&amp;page=2&page=1">Précédente</a>'
@@ -47,9 +49,9 @@ code modifié
 
     <a href="{{ request.path }}?query={{ query }}&page={{ page_obj.previous_page_number }}">Précédente</a>
 
-(idem pour la page Suivante)
+(Idem pour la page Suivante)
 
-### mise à jour du test Selenium
+### Mise à jour du test Selenium
 
 [*test_integration.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/tests/test_integration.py)
 
@@ -63,8 +65,8 @@ code modifié
 [https://github.com/Zepmanbc/oc_dapython_pr11/pull/5](https://github.com/Zepmanbc/oc_dapython_pr11/pull/5)
 
 * Vérification de Travis
-* Acception du merge: cloture automatique de l'issue #1
-* re vérification de Travis puis mise en production sur Heroku
+* Acception du merge: clôture automatique de l'issue #1
+* Re vérification de Travis puis mise en production sur Heroku
 
 ---
 
@@ -116,8 +118,8 @@ test_save_user_not_logged : ajout de la vérification de création de la variabl
 [https://github.com/Zepmanbc/oc_dapython_pr11/pull/6](https://github.com/Zepmanbc/oc_dapython_pr11/pull/6)
 
 * Vérification de Travis
-* Acception du merge: cloture automatique de l'issue #2
-* re vérification de Travis puis mise en production sur Heroku
+* Acception du merge: clôture automatique de l'issue #2
+* Re vérification de Travis puis mise en production sur Heroku
 
 ---
 
@@ -148,8 +150,8 @@ Création d'une branche *namemodif*
 [https://github.com/Zepmanbc/oc_dapython_pr11/pull/7](https://github.com/Zepmanbc/oc_dapython_pr11/pull/7)
 
 * Vérification de Travis
-* Acception du merge: cloture automatique de l'issue #3
-* re vérification de Travis puis mise en production sur Heroku
+* Acception du merge: clôture automatique de l'issue #3
+* Re vérification de Travis puis mise en production sur Heroku
 
 ---
 
@@ -169,7 +171,7 @@ Création d'une branche *resetpassword*
     * password_reset_form.html
     * password_reset_subject.txt
 
-* [purbeurre/urls.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/urls.py) : modification du chemin pour authentication pour coller au générique de Django et ajout de `include('django.contrib.auth.urls')` pour toutes les vues génériques de *password_reset*
+* [purbeurre/urls.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/urls.py) : modification du chemin pour *authentication* pour coller au générique de Django et ajout de `include('django.contrib.auth.urls')` pour toutes les vues génériques de *password_reset*
 
 * [purbeurre/settings/__init__.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/settings/__init__.py) : ajout de `EMAIL_BACKEND` pour débugger
 
@@ -181,9 +183,8 @@ Création d'une branche *resetpassword*
 
 ### Pull request + merge dans le master: mise en production
 
-
 [https://github.com/Zepmanbc/oc_dapython_pr11/pull/8](https://github.com/Zepmanbc/oc_dapython_pr11/pull/8)
 
 * Vérification de Travis
-* Acception du merge: cloture automatique de l'issue #4
-* re vérification de Travis puis mise en production sur Heroku
+* Acception du merge: clôture automatique de l'issue #4
+* Re vérification de Travis puis mise en production sur Heroku

@@ -1,8 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, DeleteView, RedirectView
+from django.views.generic import ListView, DetailView, DeleteView
 
 from sentry_sdk import capture_message, configure_scope
 
@@ -26,8 +25,7 @@ class SearchView(ListView):
             capture_message('New search')
 
         return Product.objects.filter(
-            product_name__icontains=self.request.GET['query']).\
-                order_by('product_name')
+            product_name__icontains=self.request.GET['query']).order_by('product_name')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -35,6 +33,7 @@ class SearchView(ListView):
         context['target'] = 'products:result'
         context['query'] = self.request.GET['query']
         return context
+
 
 class ResultView(ListView):
     """Return substitutes with same category and better/equal nutrigrade."""

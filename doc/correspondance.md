@@ -12,32 +12,32 @@
 
     Merci de réaliser ses modifications au plus vite
 
-    Cordialement
+    Cordialement,
 
     Colette & Rémy
 
-## Email du Développeur le 2/05/2019
+## Email du développeur le 2/05/2019
 
     Bonjour Colette et Rémy,
 
-    Effectivement ce bug, bien qu'inoffensif, n'est pas acceptable, je vais mettre cette correction en priorité avec le soucis d'enregistrement pour les utilisateurs non connectés.
+    Effectivement ce bug, bien qu'inoffensif, n'est pas acceptable, je vais mettre cette correction en priorité avec le souci d'enregistrement pour les utilisateurs non connectés.
 
     Je reviens vers vous au plus vite avec un correctif et une date de livraison pour les autres demandes.
 
-    Cordialement.
+    Cordialement,
 
     Le développeur.
 
 
-## Email du Développeu le 5/05/2019
+## Email du développeur le 5/05/2019
 
     Bonjour Colette et Rémy,
 
-    J'ai fais les corrections demandées, elles sont déjà en production vous pouvez le vérifier par vous même (https://bc-ocdapythonpr11.herokuapp.com/).
+    J'ai fait les corrections demandées, elles sont déjà en production vous pouvez le vérifier par vous-même (https://bc-ocdapythonpr11.herokuapp.com/).
 
-    L'implémentation des autres demandes sera fait avant la fin de semaine prochaine.
+    L'implémentation des autres demandes sera faite avant la fin de semaine prochaine.
 
-    Cordialement.
+    Cordialement,
 
     Le développeur.
 
@@ -51,6 +51,34 @@
 
     Nous avons hâte de voir les nouvelles demandes implémentées
 
-    Cordialement.
+    Cordialement,
+
+    Colette & Rémy
+
+## Email du développeur le 6/05/2019
+
+    Bonjour Colette et Rémy,
+
+    Les 2 nouvelles fonctionnalités sont en ligne.
+
+    Pour modifier le nom/prénom vous trouverez un bouton sur la page du compte utilisateur.
+
+    Pour modifier le mot de passe, vous trouverez un lien sur la page de connexion, cela enverra un email sur la boite de l'utilisateur avec un lien permettant de renseigner un nouveau mot de passe.
+
+    J'espère que ces améliorations répondent à votre demande.
+
+    Cordialement,
+
+    Le développeur.
+
+## Email du client le 6/05/2019
+
+    Bonjour cher développeur,
+
+    Nous avons testé les nouvelles fonctionnalités et nous en sommes très satisfaits.
+
+    Merci.
+
+    Cordialement,
 
     Colette & Rémy

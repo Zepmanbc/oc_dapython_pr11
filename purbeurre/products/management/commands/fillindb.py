@@ -17,7 +17,8 @@ class Command(BaseCommand):
         "ravioli",
         "creme chocolat",
         "yaourt aux fruits",
-        "pates a tartiner",]
+        "pates a tartiner",
+        ]
 
     keep_data = [
         'code',
@@ -26,19 +27,22 @@ class Command(BaseCommand):
         'image_url',
         'url',
         'categories',
-        'last_modified_t',]
+        'last_modified_t',
+        ]
 
     keep_data_nutriments = [
         'fat_100g',
         'saturated-fat_100g',
         'sugars_100g',
-        'salt_100g',]
+        'salt_100g',
+        ]
 
     keep_data_nutrient_levels = [
         'salt',
         'sugars',
         'saturated-fat',
-        'fat',]
+        'fat',
+        ]
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -70,14 +74,13 @@ class Command(BaseCommand):
                     self.update_database(productdb, off_data)
                     self.stdout.write(self.style.SUCCESS("Update - {}".format(productdb.product_name)))
 
-
     def get_products(self, categ, product_qty):
         """Get a json page of <product_qty> for a category.
 
         Args:
             categ (string): category, but could be any query
             product_qty (int): quantity of wanted product in this category
-        
+
         Return:
             list of json with all OpenFoodFacts data per product
         """
@@ -92,7 +95,6 @@ class Command(BaseCommand):
         return r['products']
         self.stdout.write(self.style.SUCCESS("Get from OFF: %" % categ))
 
-
     def clean_data(self, product):
         """Clean OpenFoodFacts data.
 
@@ -101,7 +103,7 @@ class Command(BaseCommand):
 
         Return:
             dict: with only wanted data
-                from keep_data, keep_data_nutriments 
+                from keep_data, keep_data_nutriments
                 and keep_data_nutrient_levels lists
 
                 fill with '' or 0 if does not exist
@@ -127,7 +129,6 @@ class Command(BaseCommand):
         if len(clean_product['nutrition_grades_tags']) > 1:
             clean_product['nutrition_grades_tags'] = 'z'
         return clean_product
-
 
     def save_in_db(self, product, categ):
         """Save product in database.
@@ -160,11 +161,10 @@ class Command(BaseCommand):
             )
             p.save()
 
-
     @staticmethod
     def check_if_exist(id_off):
         """Check if product allreadyexist in Database.
-        
+
         args:
             id_off (str): code of OpenFoodFacts
 
@@ -178,18 +178,16 @@ class Command(BaseCommand):
             exist = False
         return exist
 
-
     @staticmethod
     def get_product_from_off(code):
         """Get product from OpenFoodFacts with code.
 
         args:
             code (str): id of a product on OpenFoodFacts
-        
+
         return:
             False : if does not exists
             json
-        
         """
         result = False
         url = "https://fr.openfoodfacts.org/api/v0/product/{}.json".format(code)
@@ -197,7 +195,6 @@ class Command(BaseCommand):
         if r['status']:
             result = r['product']
         return result
-
 
     def update_database(self, productdb, off_data):
         """Update a product in the Database fron OpenFoodFacts Data.
@@ -207,16 +204,16 @@ class Command(BaseCommand):
         """
         cln_product = self.clean_data(off_data)
 
-        productdb.product_name=cln_product['product_name']
-        productdb.nutrition_grades=cln_product['nutrition_grades_tags']
-        productdb.fat=cln_product['fat']
-        productdb.fat_100g=cln_product['fat_100g']
-        productdb.saturated_fat=cln_product['saturated-fat']
-        productdb.saturated_fat_100g=cln_product['saturated-fat_100g']
-        productdb.sugars=cln_product['sugars']
-        productdb.sugars_100g=cln_product['sugars_100g']
-        productdb.salt=cln_product['salt']
-        productdb.salt_100g=cln_product['salt_100g']
-        productdb.image_url=cln_product['image_url']
-        productdb.last_modified_t=cln_product['last_modified_t']
+        productdb.product_name = cln_product['product_name']
+        productdb.nutrition_grades = cln_product['nutrition_grades_tags']
+        productdb.fat = cln_product['fat']
+        productdb.fat_100g = cln_product['fat_100g']
+        productdb.saturated_fat = cln_product['saturated-fat']
+        productdb.saturated_fat_100g = cln_product['saturated-fat_100g']
+        productdb.sugars = cln_product['sugars']
+        productdb.sugars_100g = cln_product['sugars_100g']
+        productdb.salt = cln_product['salt']
+        productdb.salt_100g = cln_product['salt_100g']
+        productdb.image_url = cln_product['image_url']
+        productdb.last_modified_t = cln_product['last_modified_t']
         productdb.save()
