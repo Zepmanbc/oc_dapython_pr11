@@ -70,7 +70,7 @@ code modifié
 
 ---
 
-## [Issue #2](https://github.com/Zepmanbc/oc_dapython_pr11/issues/2) : Perte de la séléction si l'utilisateur n'est pas connecté
+## [Issue #2](https://github.com/Zepmanbc/oc_dapython_pr11/issues/2) : Perte de la sélection si l'utilisateur n'est pas connecté
 
 Création d'une branche *lostsave*
 
