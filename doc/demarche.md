@@ -175,11 +175,15 @@ Création d'une branche *resetpassword*
 
 * [purbeurre/settings/heroku_settings.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/settings/heroku_settings.py) : ajout de la configuration pour utiliser *SendGrid*
 
-### Ecriture des tests
+### Ecriture de test Selenium
 
-
-
-### mise à jour du test Selenium
+[purbeurre/tests/test_integration_issue4.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/tests/test_integration_issue4.py) : test du parcours de réinitialisation de mot de passe
 
 ### Pull request + merge dans le master: mise en production
 
+
+[https://github.com/Zepmanbc/oc_dapython_pr11/pull/8](https://github.com/Zepmanbc/oc_dapython_pr11/pull/8)
+
+* Vérification de Travis
+* Acception du merge: cloture automatique de l'issue #4
+* re vérification de Travis puis mise en production sur Heroku
