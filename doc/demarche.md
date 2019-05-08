@@ -58,7 +58,7 @@ code modifié
     # Go to page 2, got to page 1 and test url
     driver.find_element_by_partial_link_text('Suivante').click()
     driver.find_element_by_partial_link_text('Précédente').click()
-    assert re.search(r'http://localhost:[0-9]*/products/search/\?query=choucroute&page=1', driver.current_url)
+    assert re.search(r'/products/search/\?query=choucroute&page=1', driver.current_url)
 
 ### Pull request + merge dans le master: mise en production
 
@@ -173,7 +173,7 @@ Création d'une branche *resetpassword*
 
 * [purbeurre/urls.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/urls.py) : modification du chemin pour *authentication* pour coller au générique de Django et ajout de `include('django.contrib.auth.urls')` pour toutes les vues génériques de *password_reset*
 
-* [purbeurre/settings/__init__.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/settings/__init__.py) : ajout de `EMAIL_BACKEND` pour débugger
+* [purbeurre/settings/\_\_init\_\_.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/settings/__init__.py) : ajout de `EMAIL_BACKEND` pour débugger
 
 * [purbeurre/settings/heroku_settings.py](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/purbeurre/settings/heroku_settings.py) : ajout de la configuration pour utiliser *SendGrid*
 

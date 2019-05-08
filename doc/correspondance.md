@@ -20,7 +20,7 @@
 
     Bonjour Colette et Rémy,
 
-    Effectivement ce bug, bien qu'inoffensif, n'est pas acceptable, je vais mettre cette correction en priorité avec le souci d'enregistrement pour les utilisateurs non connectés.
+    Effectivement ce bug n'est pas acceptable, je vais mettre cette correction en priorité avec le souci d'enregistrement pour les utilisateurs non connectés.
 
     Je reviens vers vous au plus vite avec un correctif et une date de livraison pour les autres demandes.
 
@@ -44,8 +44,6 @@
 ## Email du client le 5/05/2019
 
     Bonjour cher développeur,
-
-    Merci pour cette réactivité extraordinaire et ce travail réalisé de main de maitre (profitons d'être dans un environnement fictifs pour vous envoyer des fleurs).
 
     Nous avons testé les corrections et tout fonctionne.
 

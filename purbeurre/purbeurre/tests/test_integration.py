@@ -109,7 +109,7 @@ def test_full_path(live_server, driver, loadProducts):
     # Go to page 2, got to page 1 and test url
     driver.find_element_by_partial_link_text('Suivante').click()
     driver.find_element_by_partial_link_text('Précédente').click()
-    assert re.search(r'http://localhost:[0-9]*/products/search/\?query=choucroute&page=1', driver.current_url)
+    assert re.search(r'/products/search/\?query=choucroute&page=1', driver.current_url)
     # Scroll to top of page, click on 2nd product
     driver.execute_script("window.scrollTo(0, 0);")
     prod2 = driver.find_elements_by_css_selector('.product-thumb img')[1]
