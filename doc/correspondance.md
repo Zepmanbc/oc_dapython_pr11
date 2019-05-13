@@ -6,11 +6,11 @@
 
         http://3.16.90.115/products/search/?query=choucroute&page=2&page=3&page=4&page=5&page=6&page=5&page=4
 
-    Nous avons remarqué un autre disfonctionnement, lorsqu'un utilisateur n'est pas connecté (voir pire, n'a pas de compte) et qu'il fait une recherche, au moment de sauvegardé il est invité à se connecter, une fois connecté il est obligé de recommencer sa recherche! Est-ce que vous pourriez faire en sorte qu'une fois connecté sa recherche soit enregistré.
+    Nous avons remarqué un autre disfonctionnement, lorsqu'un utilisateur n'est pas connecté (voir pire, n'a pas de compte) et qu'il fait une recherche, au moment de sauvegarder il est invité à se connecter, une fois connecté il est obligé de recommencer sa recherche! Est-ce que vous pourriez faire en sorte qu'une fois connecté sa recherche soit enregistrée.
 
     Enfin nous avons eu plusieurs plaintes de personne qui souhaiteraient pouvoir modifier leurs noms/prénoms et pouvoir réinitialiser leur mot de passe.
 
-    Merci de réaliser ses modifications au plus vite
+    Merci de réaliser ces modifications au plus vite
 
     Cordialement,
 
@@ -57,7 +57,7 @@
 
     Bonjour Colette et Rémy,
 
-    Les 2 nouvelles fonctionnalités sont en ligne.
+    Les 2 nouvelles fonctionnalitées sont en ligne.
 
     Pour modifier le nom/prénom vous trouverez un bouton sur la page du compte utilisateur.
 
@@ -73,7 +73,7 @@
 
     Bonjour cher développeur,
 
-    Nous avons testé les nouvelles fonctionnalités et nous en sommes très satisfaits.
+    Nous avons testé les nouvelles fonctionnalitées et nous en sommes très satisfaits.
 
     Merci.
 

@@ -2,7 +2,7 @@
 
 [Tableau Trello](https://trello.com/b/rq2AwW7O/ocdapythonpr11)
 
-[Repo Github](https://github.com/Zepmanbc/oc_dapython_pr11)
+[Dépôt Github](https://github.com/Zepmanbc/oc_dapython_pr11)
 
 [Site en ligne](https://bc-ocdapythonpr11.herokuapp.com/)
 
