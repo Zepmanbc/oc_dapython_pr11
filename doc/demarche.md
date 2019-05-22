@@ -22,7 +22,7 @@ Création d'une branche *pagination*
 
 ### Ecriture des tests
 
-[*test_search.py*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/products/tests/test_search.py)
+[*test_search.py*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/products/tests/test_search.py)
 
 => test_pagination_only_one_page
 
@@ -39,7 +39,7 @@ Création d'une branche *pagination*
 
 ### Modification du code
 
-[*search.html*](https://github.com/Zepmanbc/oc_dapython_pr10/blob/master/purbeurre/products/templates/products/search.html)
+[*search.html*](https://github.com/Zepmanbc/oc_dapython_pr11/blob/master/purbeurre/products/templates/products/search.html)
 
 code original:
 
